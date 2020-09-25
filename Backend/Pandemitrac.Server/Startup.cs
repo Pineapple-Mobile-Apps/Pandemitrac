@@ -100,7 +100,7 @@ namespace Pandemitrac.Server
             catch (Exception e)
             {
                 logger.LogInformation("Versuche erneut");
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
                 // Erneut versuchen
                 CreateDatabase(scope, dbContext, logger);
             }

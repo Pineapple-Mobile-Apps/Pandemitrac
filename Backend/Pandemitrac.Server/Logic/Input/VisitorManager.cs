@@ -69,7 +69,7 @@ namespace Pandemitrac.Server.Logic.Input
         /// <returns>Async</returns>
         public async Task CreateVisitorAsync(Visitor visitor)
         {
-            var existingVisitor = CheckForDuplicate(visitor);
+            var existingVisitor = await CheckForDuplicate(visitor);
 
             if (existingVisitor != null)
             {
