@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Pandemitrac.Server.Model.Core;
 
 namespace Pandemitrac.Server.Models.Core
 {
