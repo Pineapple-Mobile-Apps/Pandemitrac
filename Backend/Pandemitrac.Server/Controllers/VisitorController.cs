@@ -25,7 +25,7 @@ namespace Pandemitrac.Server.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateVisitor(Visitor visitor) {
             await _visitorManager.CreateVisitorAsync(visitor);
-            return Ok();
+            return Ok(visitor);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Pandemitrac.Server.Controllers
         public async Task<IActionResult> CreateVisitor([FromBody] Visitor visitor, [FromQuery] int caseId)
         {
             await _visitorManager.CreateDependingVisitorAsync(visitor, caseId);
-            return Ok();
+            return Ok(visitor);
         }
 
         [HttpGet]
