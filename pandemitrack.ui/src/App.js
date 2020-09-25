@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Launch from './Launch';
 import Home from './Home';
 import Next from './Next';
 import {
@@ -18,7 +19,7 @@ function App() {
     <Router>
       <div>
         <Navbar color="light" light expand="md">
-          <NavbarBrand href="/" >Kontaktverfolgung</NavbarBrand>
+          <NavbarBrand href="/launch" >Kontaktverfolgung</NavbarBrand>
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="mr-auto" navbar>            <NavItem>
@@ -42,6 +43,9 @@ function App() {
           of them to render at a time
         */}
         <Switch>
+        <Route path="/launch">
+            <Launch />
+          </Route>
           <Route path="/home">
             <Home />
           </Route>

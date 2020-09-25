@@ -24,8 +24,8 @@ let Next = () => {
       },
       body: JSON.stringify({
         name: name,
-        adress: street + housenumber,
-        postCode: parseInt(postcode) || 0 ,
+        adress: street + " " + housenumber || "",
+        postCode: parseInt(postcode) || 0,
         city: city || "",
         phone: tel || null,
         mail: mail || null
@@ -38,25 +38,23 @@ let Next = () => {
       <Nav tabs>
         <NavItem>
           <NavLink className={classnames({ active: activeTab === '1' })}
-            onClick={() => { toggle('1'); }}>Persönliche Daten</NavLink>
+            onClick={() => { toggle('1'); }}>
+            Persönliche Daten
+              </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === '2' })}
-            onClick={() => { toggle('2'); }}
-          >
+          <NavLink onClick={() => { toggle('2'); }}
+            className={classnames({ active: activeTab === '2' })} >
             Besuchte Orte
           </NavLink>
-          <NavLink
-            className={classnames({ active: activeTab === '3' })}
-            onClick={() => { toggle('3'); }}
-          >
+        </NavItem><NavItem>
+          <NavLink onClick={() => { toggle('3'); }}
+            className={classnames({ active: activeTab === '3' })} >
             Abhängige Personen
           </NavLink>
-          <NavLink
-            className={classnames({ active: activeTab === '4' })}
-            onClick={() => { toggle('4'); }}
-          >
+        </NavItem><NavItem>
+          <NavLink onClick={() => { toggle('4'); }}
+            className={classnames({ active: activeTab === '4' })} >
             Validierung und Absenden
           </NavLink>
         </NavItem>
@@ -72,38 +70,47 @@ let Next = () => {
                 </FormGroup>
                 <FormGroup>
                   <Label for="street">Straße</Label>
-                  <Input type="text" name="street" id="street" placeholder="Strasse" value={street} onChange={e => setName(e.currentTarget.value)} />
+                  <Input type="text" name="street" id="street" placeholder="Strasse" value={street} onChange={e => setStreet(e.currentTarget.value)} />
                   <Label for="housenumber">Hausnummer</Label>
-                  <Input type="text" name="housenumber" id="housenumber" value={housenumber} onChange={e => setName(e.currentTarget.value)} placeholder="Hausnummer (ggf. Zusatz)" />
+                  <Input type="text" name="housenumber" id="housenumber" value={housenumber} onChange={e => setHousnumber(e.currentTarget.value)} placeholder="Hausnummer (ggf. Zusatz)" />
                 </FormGroup>
                 <FormGroup>
                   <Label for="postcode">Postleitzahl</Label>
-                  <Input type="number" name="postcode" id="postcode" value={postcode} onChange={e => setName(e.currentTarget.value)} placeholder="Postleitzahl" />
+                  <Input type="number" name="postcode" id="postcode" value={postcode} onChange={e => setPostcode(e.currentTarget.value)} placeholder="Postleitzahl" />
                 </FormGroup>
                 <FormGroup>
                   <Label for="city">Stadt</Label>
-                  <Input type="text" name="city" id="city" value={city} onChange={e => setName(e.currentTarget.value)} placeholder="Stadt" />
+                  <Input type="text" name="city" id="city" value={city} onChange={e => setCity(e.currentTarget.value)} placeholder="Stadt" />
                 </FormGroup>
                 <FormGroup>
                   <Label for="tel">Telefonnummer</Label>
-                  <Input type="tel" name="tel" id="tel" value={tel} onChange={e => setName(e.currentTarget.value)} placeholder="Telefonnummer" />
+                  <Input type="tel" name="tel" id="tel" value={tel} onChange={e => setTel(e.currentTarget.value)} placeholder="Telefonnummer" />
                 </FormGroup>
                 <FormGroup>
                   <Label for="mail">E-Mail</Label>
-                  <Input type="mail" name="mail" id="mail" value={mail} onChange={e => setName(e.currentTarget.value)} placeholder="Mail-Adresse" />
+                  <Input type="mail" name="mail" id="mail" value={mail} onChange={e => setMail(e.currentTarget.value)} placeholder="Mail-Adresse" />
                 </FormGroup>
 
-
-                
               </Form>
+
             </Col>
+          </Row>
+          <Row>
+            <Col xs="6" sm="4"></Col>
+            <Col xs="6" sm="4"></Col>
+            <Col sm="4"><Button color="primary" onClick={() => { toggle('2'); }}>zur nächsten Seite</Button></Col>
           </Row>
         </TabPane>
         <TabPane tabId="2">
           <Row>
             <Col sm="12">
-              <h4>Besuchte Orte erfassen</h4>
+              <h4>Besuchte Orte erfassen</h4>       
             </Col>
+          </Row>
+          <Row>
+            <Col xs="6" sm="4">  <Button onClick={() => { toggle('1'); }}>zur vorherigen Seite</Button></Col>
+            <Col xs="6" sm="4"></Col>
+            <Col sm="4">  <Button color="primary" onClick={() => { toggle('3'); }}>zur nächsten Seite</Button></Col>
           </Row>
         </TabPane>
         <TabPane tabId="3">
@@ -112,13 +119,23 @@ let Next = () => {
               <h4>Weitere Personen erfassen</h4>
             </Col>
           </Row>
+          <Row>
+            <Col xs="6" sm="4">  <Button onClick={() => { toggle('2'); }}>zur vorherigen Seite</Button></Col>
+            <Col xs="6" sm="4"></Col>
+            <Col sm="4">  <Button color="primary" onClick={() => { toggle('4'); }}>zur nächsten Seite</Button></Col>
+          </Row>
         </TabPane>
         <TabPane tabId="4">
           <Row>
             <Col sm="12">
               <h4>Validierung</h4>
-              <Button onClick={submit}>Submit</Button>
+              
             </Col>
+          </Row>
+          <Row>
+            <Col xs="6" sm="4">  <Button onClick={() => { toggle('3'); }}>zur vorherigen Seite</Button></Col>
+            <Col xs="6" sm="4"></Col>
+            <Col sm="4"><Button color="primary" onClick={submit}>Daten sichern</Button></Col>
           </Row>
         </TabPane>
       </TabContent>
