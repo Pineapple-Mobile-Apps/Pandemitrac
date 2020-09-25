@@ -1,57 +1,107 @@
-import React from 'react';
-import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import React, { useState, useEffect } from 'react';
+import { Col, Container, FormText, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import SimpleReactValidator from 'simple-react-validator';
+SimpleReactValidator.addLocale('de', {
+  required: 'Dies ist ein Mussfeld',
+  alpha: 'Nur Buchstaben',
+  alpha_space: 'Geben sie ein Namensformat ein',
+  phone: 'Geben sie eine Telefonnummer ein',
+  email: 'Geben sie ein gültiges E-Mailformat ein',
+});
 
 const App = (props) => {
+  const [phone, setphone] = useState("");
+  const [mail, setmail] = useState("");
+  const [city, setcity] = useState("");
+  const [postCode, setpostCode] = useState("");
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [validator, setValidator] = useState(new SimpleReactValidator({ locale: 'de' }));
+  const [dummy, setDummy] = useState(0);
+
+  const onFormSubmit = async () => {
+    if (validator.allValid()) {
+      let result = await fetch("/api/Visitor/createDepending?caseid=1", {
+        "method": "POST",
+        "headers": {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          name: name,
+          address: address,
+          postCode: parseInt(postCode),
+          city: city,
+          phone: phone,
+          mail: mail
+        })
+      });
+    } else {
+      validator.showMessages();
+      // rerender to show messages for the first time
+      // you can use the autoForceUpdate option to do this automatically`
+      setDummy(dummy + 1);
+    }
+  };
   return (
-    <Form>
-      <Row form>
-        <Col md={6}>
-          <FormGroup>
-            <Label for="exampleEmail">Email</Label>
-            <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
-          </FormGroup>
-        </Col>
-        <Col md={6}>
-          <FormGroup>
-            <Label for="examplePassword">Password</Label>
-            <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
-          </FormGroup>
-        </Col>
-      </Row>
-      <FormGroup>
-        <Label for="exampleAddress">Address</Label>
-        <Input type="text" name="address" id="exampleAddress" placeholder="1234 Main St"/>
-      </FormGroup>
-      <FormGroup>
-        <Label for="exampleAddress2">Address 2</Label>
-        <Input type="text" name="address2" id="exampleAddress2" placeholder="Apartment, studio, or floor"/>
-      </FormGroup>
-      <Row form>
-        <Col md={6}>
-          <FormGroup>
-            <Label for="exampleCity">City</Label>
-            <Input type="text" name="city" id="exampleCity"/>
-          </FormGroup>
-        </Col>
-        <Col md={4}>
-          <FormGroup>
-            <Label for="exampleState">State</Label>
-            <Input type="text" name="state" id="exampleState"/>
-          </FormGroup>
-        </Col>
-        <Col md={2}>
-          <FormGroup>
-            <Label for="exampleZip">Zip</Label>
-            <Input type="text" name="zip" id="exampleZip"/>
-          </FormGroup>  
-        </Col>
-      </Row>
-      <FormGroup check>
-        <Input type="checkbox" name="check" id="exampleCheck"/>
-        <Label for="exampleCheck" check>Check me out</Label>
-      </FormGroup>
-      <Button>Sign in</Button>
-    </Form>
+    <Container>
+      <Form>
+        <Row form>
+          <Col md={8}>
+            <FormGroup>
+              <Label for="name">Name</Label>
+              <Input type="text" value={name} onChange={e => setName(e.currentTarget.value)} id="lastName" placeholder="Geben sie den Nachnamen ein" />
+              {validator.message('name', {name}, 'required|alpha_dash_space')}
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row form>
+          <Col md={8}>
+            <FormGroup>
+              <Label for="address">Straße</Label>
+              <Input type="text" value={address} onChange={e => setAddress(e.currentTarget.value)} id="address" placeholder="Geben sie die Adresse ein" />
+              {validator.message('address', {address}, 'required')}
+
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row form>
+          <Col md={2}>
+            <FormGroup>
+              <Label for="postCode">PLZ</Label>
+              <Input type="text" value={postCode} onChange={e => setpostCode(e.currentTarget.value)} id="postCode" placeholder="Geben sie die PLZ ein" />
+              {validator.message('postCode', postCode, 'required|numeric|min:5|max:5', { className: 'text-danger' })}
+            </FormGroup>
+          </Col>
+          <Col md={6}>
+            <FormGroup>
+              <Label for="city">Stadt</Label>
+              <Input type="text" value={city} onChange={e => setcity(e.currentTarget.value)} id="city" placeholder="Geben sie den Ort ein" />
+              {validator.message('city', city, 'required|alpha_dash_space', { className: 'text-danger' })}
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={8}>
+            <FormGroup>
+              <Label for="phone">Handynummer</Label>
+              <Input type="text" value={phone} onChange={e => setphone(e.currentTarget.value)} id="phone" placeholder="Geben sie die Handynummer ein" />
+              {validator.message('phone', phone, 'required|phone', { className: 'text-danger' })}
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={8}>
+            <FormGroup>
+              <Label for="mail">E-Mailadresse</Label>
+              <Input type="text" value={mail} onChange={e => setmail(e.currentTarget.value)} id="mail" placeholder="Geben sie die E-Mailadresse ein" />
+              {validator.message('mail', mail, 'required|email', { className: 'text-danger' })}
+
+            </FormGroup>
+          </Col>
+        </Row>
+        <Button onClick={onFormSubmit}>Daten abschicken</Button>
+      </Form >
+    </Container>
   );
 }
 
