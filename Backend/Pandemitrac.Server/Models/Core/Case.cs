@@ -58,6 +58,19 @@ namespace Pandemitrac.Server.Models.Core
         /// Liste der Besuche
         /// </summary>
         public virtual List<Visit> Visits { get; set; }
+
+        /// <summary>
+        /// ID des Fall-Sachberarbeiters.
+        /// </summary>
+        /// <value>Automatisch gespeicherter Wert.</value>
+        public int EditorId { get; set; }
+
+        /// <summary>
+        /// Sachbearbeiter des Falls.
+        /// </summary>
+        /// <value>Automatisch gespeicherter Wert.</value>
+        [ForeignKey(nameof(EditorId))]
+        public virtual Editor Editor { get; set; }
     }
 
 }
