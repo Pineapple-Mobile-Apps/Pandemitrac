@@ -20,8 +20,7 @@ namespace Pandemitrac.Server.Logic
         {
             var visitor = new Visitor
             {
-                FirstName = "Tim",
-                LastName = "Ittermann"
+                Name = "Tim Ittermann"
             };
 
             _db.Visitors.Add(visitor);

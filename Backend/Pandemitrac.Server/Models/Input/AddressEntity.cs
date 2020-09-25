@@ -18,7 +18,7 @@ namespace Pandemitrac.Server.Models.Input
         /// PLZ
         /// </summary>
         [Range(00000, 99999)]
-        public int PostCode { get; set; }
+        public int? PostCode { get; set; }
 
         /// <summary>
         /// Stadt

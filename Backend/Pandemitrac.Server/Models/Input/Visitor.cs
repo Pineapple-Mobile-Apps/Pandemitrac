@@ -12,13 +12,7 @@ namespace Pandemitrac.Server.Models.Input
         /// Vorname
         /// </summary>
         [Required(AllowEmptyStrings = false)]
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Nachname
-        /// </summary>
-        [Required(AllowEmptyStrings = false)]
-        public string LastName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Telefonnummer 
