@@ -101,7 +101,7 @@ namespace Pandemitrac.Server
                     logger.LogInformation("Mockdaten erzeugt");
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 logger.LogInformation("Versuche erneut");
                 Thread.Sleep(1000);

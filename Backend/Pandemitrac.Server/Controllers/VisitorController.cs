@@ -37,6 +37,7 @@ namespace Pandemitrac.Server.Controllers
         /// Legt einen neuen Besucher an, welcher zu einem Fall gehört
         /// </summary>
         /// <param name="visitor">Besucher</param>
+        /// <param name="caseId">ID des Falls</param>
         /// <returns>Ok</returns>
         [HttpPost("/api/visitor/createDepending")]
         public async Task<IActionResult> CreateVisitor([FromBody] Visitor visitor, [FromQuery] int caseId)
