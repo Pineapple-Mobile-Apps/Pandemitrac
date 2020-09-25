@@ -6,15 +6,9 @@ namespace Pandemitrac.Server.Models.Core
     public class Editor : ModelBase
     {
         /// <summary>
-        /// Ruft den Vornamen des Sachbearbeites ab oder legt diesen fest.
+        /// Ruft den vollen Namen des Sachbearbeites ab oder legt diesen fest.
         /// </summary>
         /// <value>Automatisch gespeicherter Wert.</value>
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Ruft den Nachnamen des Sachbearbeites ab oder legt diesen fest.
-        /// </summary>
-        /// <value>Automatisch gespeicherter Wert.</value>
-        public string LastName { get; set; }
+        public string Name { get; set; }
     }
 }
