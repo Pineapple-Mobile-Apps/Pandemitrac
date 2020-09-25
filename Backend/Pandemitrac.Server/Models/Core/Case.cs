@@ -2,27 +2,37 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Pandemitrac.Server.Model.Input;
+using Pandemitrac.Server.Models.Core;
+using Pandemitrac.Server.Models.Input;
 
-namespace Pandemitrac.Server.Model.Core
+namespace Pandemitrac.Server.Models.Core
 {
-
     /// <summary>
     /// Ein zu überwachender Fall
     /// </summary>
-    public class Case
+    public class Case : ModelBase
     {
         /// <summary>
-        /// Id des Falles
+        /// Zeitpunkt der Erstellung
         /// </summary>
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
         [Required]
         public DateTime Created { get; set; }
 
-        public List<Visitor> ConcernedVisitors { get; set; }
+        /// <summary>
+        /// Besucher Id 
+        /// </summary>
+        public int SubjectId { get; set; }
+
+        /// <summary>
+        /// Betroffene Person
+        /// </summary>
+        [ForeignKey("SubjectId")]
+        public Visitor Subject { get; set; }
+
+        /// <summary>
+        /// Betroffende Personen
+        /// </summary>
+        public List<DependentSubject> DependentSubjects { get; set; }
     }
 
 }
