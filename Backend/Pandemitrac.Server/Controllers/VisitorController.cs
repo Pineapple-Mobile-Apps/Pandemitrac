@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Pandemitrac.Server.Logic.Input;
@@ -37,6 +38,10 @@ namespace Pandemitrac.Server.Controllers
         {
             await _visitorManager.CreateDependingVisitorAsync(visitor, caseId);
             return Ok();
+        }
+
+        public IEnumerable<Visitor> GetVisitors() {
+            return DatabaseContext.Visitors;
         }
     }
 
