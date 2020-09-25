@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,9 +13,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OData.Edm;
 using Pandemitrac.Server.Logic;
 using Pandemitrac.Server.Logic.Input;
 using Pandemitrac.Server.Models;
+using Pandemitrac.Server.Models.Core;
+using Pandemitrac.Server.Models.Input;
 
 namespace Pandemitrac.Server
 {
@@ -62,6 +67,7 @@ namespace Pandemitrac.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapODataRoute("OData", "odata", BuildEdmModel(new ODataConventionModelBuilder()));
             });
         }
 
@@ -84,6 +90,14 @@ namespace Pandemitrac.Server
                 // Erneut versuchen
                 CreateDatabase(scope, dbContext, logger);
             }
+        }
+
+        private IEdmModel BuildEdmModel(ODataModelBuilder builder)
+        {
+            builder.EntitySet<Case>("cases");
+            builder.EntitySet<Editor>("editors");
+            builder.EntitySet<Visitor>("visitors");
+            return builder.GetEdmModel();
         }
     }
 }
