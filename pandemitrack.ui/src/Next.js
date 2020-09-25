@@ -1,77 +1,129 @@
-import React from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import React, { useState } from 'react';
+import classnames from 'classnames';
+import { Button, Form, FormGroup, Label, Input, FormText, Container, Nav, NavLink, NavItem, TabContent, TabPane, Row, Col } from 'reactstrap';
 let Next = () => {
+  //Verwaltung der Tabs deren Status
+  const [activeTab, setActiveTab] = useState("1");
+  const toggle = tab => {
+    if (activeTab !== tab) setActiveTab(tab);
+  }
+
+  const [name, setName] = useState("");
+  const [street, setStreet] = useState("");
+  const [housenumber, setHousnumber] = useState("");
+  const [postcode, setPostcode] = useState("");
+  const [city, setCity] = useState("");
+  const [tel, setTel] = useState("");
+  const [mail, setMail] = useState("");
+
+  const submit = async () => {
+    let result = await fetch("/api/Visitor/create", {
+      "method": "POST",
+      "headers": {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        name: name,
+        adress: street + housenumber,
+        postCode: parseInt(postcode) || 0 ,
+        city: city || "",
+        phone: tel || null,
+        mail: mail || null
+      })
+    });
+  };
+
   return (
-    <Form>
-    <FormGroup>
-      <Label for="exampleEmail">Email</Label>
-      <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
-    </FormGroup>
-    <FormGroup>
-      <Label for="examplePassword">Password</Label>
-      <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
-    </FormGroup>
-    <FormGroup>
-      <Label for="exampleSelect">Select</Label>
-      <Input type="select" name="select" id="exampleSelect">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-      </Input>
-    </FormGroup>
-    <FormGroup>
-      <Label for="exampleSelectMulti">Select Multiple</Label>
-      <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-      </Input>
-    </FormGroup>
-    <FormGroup>
-      <Label for="exampleText">Text Area</Label>
-      <Input type="textarea" name="text" id="exampleText" />
-    </FormGroup>
-    <FormGroup>
-      <Label for="exampleFile">File</Label>
-      <Input type="file" name="file" id="exampleFile" />
-      <FormText color="muted">
-        This is some placeholder block-level help text for the above input.
-        It's a bit lighter and easily wraps to a new line.
-      </FormText>
-    </FormGroup>
-    <FormGroup tag="fieldset">
-      <legend>Radio Buttons</legend>
-      <FormGroup check>
-        <Label check>
-          <Input type="radio" name="radio1" />{' '}
-          Option one is this and that—be sure to include why it's great
-        </Label>
-      </FormGroup>
-      <FormGroup check>
-        <Label check>
-          <Input type="radio" name="radio1" />{' '}
-          Option two can be something else and selecting it will deselect option one
-        </Label>
-      </FormGroup>
-      <FormGroup check disabled>
-        <Label check>
-          <Input type="radio" name="radio1" disabled />{' '}
-          Option three is disabled
-        </Label>
-      </FormGroup>
-    </FormGroup>
-    <FormGroup check>
-      <Label check>
-        <Input type="checkbox" />{' '}
-        Check me out
-      </Label>
-    </FormGroup>
-    <Button>Submit</Button>
-  </Form>
+    <Container>
+      <Nav tabs>
+        <NavItem>
+          <NavLink className={classnames({ active: activeTab === '1' })}
+            onClick={() => { toggle('1'); }}>Persönliche Daten</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === '2' })}
+            onClick={() => { toggle('2'); }}
+          >
+            Besuchte Orte
+          </NavLink>
+          <NavLink
+            className={classnames({ active: activeTab === '3' })}
+            onClick={() => { toggle('3'); }}
+          >
+            Abhängige Personen
+          </NavLink>
+          <NavLink
+            className={classnames({ active: activeTab === '4' })}
+            onClick={() => { toggle('4'); }}
+          >
+            Validierung und Absenden
+          </NavLink>
+        </NavItem>
+      </Nav>
+      <TabContent activeTab={activeTab}>
+        <TabPane tabId="1">
+          <Row>
+            <Col sm="12">
+              <Form>
+                <FormGroup>
+                  <Label for="name">Name</Label>
+                  <Input type="text" name="name" id="name" value={name} onChange={e => setName(e.currentTarget.value)} placeholder="Voller Name" />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="street">Straße</Label>
+                  <Input type="text" name="street" id="street" placeholder="Strasse" value={street} onChange={e => setName(e.currentTarget.value)} />
+                  <Label for="housenumber">Hausnummer</Label>
+                  <Input type="text" name="housenumber" id="housenumber" value={housenumber} onChange={e => setName(e.currentTarget.value)} placeholder="Hausnummer (ggf. Zusatz)" />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="postcode">Postleitzahl</Label>
+                  <Input type="number" name="postcode" id="postcode" value={postcode} onChange={e => setName(e.currentTarget.value)} placeholder="Postleitzahl" />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="city">Stadt</Label>
+                  <Input type="text" name="city" id="city" value={city} onChange={e => setName(e.currentTarget.value)} placeholder="Stadt" />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="tel">Telefonnummer</Label>
+                  <Input type="tel" name="tel" id="tel" value={tel} onChange={e => setName(e.currentTarget.value)} placeholder="Telefonnummer" />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="mail">E-Mail</Label>
+                  <Input type="mail" name="mail" id="mail" value={mail} onChange={e => setName(e.currentTarget.value)} placeholder="Mail-Adresse" />
+                </FormGroup>
+
+
+                
+              </Form>
+            </Col>
+          </Row>
+        </TabPane>
+        <TabPane tabId="2">
+          <Row>
+            <Col sm="12">
+              <h4>Besuchte Orte erfassen</h4>
+            </Col>
+          </Row>
+        </TabPane>
+        <TabPane tabId="3">
+          <Row>
+            <Col sm="12">
+              <h4>Weitere Personen erfassen</h4>
+            </Col>
+          </Row>
+        </TabPane>
+        <TabPane tabId="4">
+          <Row>
+            <Col sm="12">
+              <h4>Validierung</h4>
+              <Button onClick={submit}>Submit</Button>
+            </Col>
+          </Row>
+        </TabPane>
+      </TabContent>
+
+    </Container>
 
   )
 }
