@@ -19,13 +19,13 @@ namespace Pandemitrac.Server.Models.Core
         /// </summary>
         /// <value></value>
         [ForeignKey("DependentSubjectId")]
-        public DependentSubject DependentSubject {get;set;}
+        public DependentSubject DependentSubject { get; set; }
 
         /// <summary>
         /// Bearbeiter
         /// </summary>
         [Required]
-        public int EditorId {get;set;}
+        public int EditorId { get; set; }
 
         /// <summary>
         /// Bearbeiter
