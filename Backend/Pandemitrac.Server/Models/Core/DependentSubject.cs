@@ -25,18 +25,18 @@ namespace Pandemitrac.Server.Models.Core
         /// Zugeordneter Fall
         /// </summary>
         [ForeignKey("CaseId")]
-        public Case Case { get; set; }
+        public virtual Case Case { get; set; }
 
         /// <summary>
         /// Zugeordneter Besucher
         /// </summary>
         [ForeignKey("VisitorId")]
-        public Visitor Visitor { get; set; }
+        public virtual Visitor Visitor { get; set; }
 
         /// <summary>
         /// Verlauf dieser Statusänderungen
         /// </summary>
-        public List<ChangeDependentSubjectStateEntry> History { get; set; }
+        public virtual List<ChangeDependentSubjectStateEntry> History { get; set; }
 
     }
 

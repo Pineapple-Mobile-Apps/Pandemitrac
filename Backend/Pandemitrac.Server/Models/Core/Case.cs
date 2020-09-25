@@ -26,12 +26,12 @@ namespace Pandemitrac.Server.Models.Core
         /// Betroffene Person
         /// </summary>
         [ForeignKey("SubjectId")]
-        public Visitor Subject { get; set; }
+        public virtual Visitor Subject { get; set; }
 
         /// <summary>
         /// Betroffende Personen
         /// </summary>
-        public List<DependentSubject> DependentSubjects { get; set; }
+        public virtual List<DependentSubject> DependentSubjects { get; set; }
 
         /// <summary>
         /// Datum des Tests
@@ -57,7 +57,7 @@ namespace Pandemitrac.Server.Models.Core
         /// <summary>
         /// Liste der Besuche
         /// </summary>
-        public List<Visit> Visits { get; set; }
+        public virtual List<Visit> Visits { get; set; }
     }
 
 }

@@ -17,7 +17,7 @@ namespace Pandemitrac.Server.Models.Core
         /// <summary>
         /// Der Fall
         /// </summary>
-        public Case Case { get; set; }
+        public virtual Case Case { get; set; }
 
         /// <summary>
         /// Beginn des Besuchs
@@ -38,7 +38,7 @@ namespace Pandemitrac.Server.Models.Core
         /// Der Ort
         /// </summary>
         [ForeignKey("LocationId")]
-        public Location Location { get; set; }
+        public virtual Location Location { get; set; }
 
         /// <summary>
         /// Wann versucht wurde diesen Besucher zu kontaktieren

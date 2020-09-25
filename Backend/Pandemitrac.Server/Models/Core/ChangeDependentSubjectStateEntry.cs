@@ -20,7 +20,7 @@ namespace Pandemitrac.Server.Models.Core
         /// </summary>
         /// <value></value>
         [ForeignKey("DependentSubjectId")]
-        public DependentSubject DependentSubject { get; set; }
+        public virtual DependentSubject DependentSubject { get; set; }
 
         /// <summary>
         /// Bearbeiter
@@ -32,7 +32,7 @@ namespace Pandemitrac.Server.Models.Core
         /// Bearbeiter
         /// </summary>
         [ForeignKey("EditorId")]
-        public Editor Editor { get; set; }
+        public virtual Editor Editor { get; set; }
 
         /// <summary>
         /// Status dieser Änderung
