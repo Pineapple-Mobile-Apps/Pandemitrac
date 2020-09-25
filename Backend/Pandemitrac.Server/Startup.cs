@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Pandemitrac.Server.Logic;
 using Pandemitrac.Server.Logic.Input;
 using Pandemitrac.Server.Models;
 
@@ -45,8 +46,10 @@ namespace Pandemitrac.Server
                 var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
                 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Startup>>();
                 if (dbContext.Database.EnsureCreated()) {
-                    // MOCKUP
                     logger.LogInformation("Datenbank erzeugt");
+                    var mocker = ActivatorUtilities.CreateInstance<Mocker>(scope.ServiceProvider);
+                    mocker.Mock();
+                    logger.LogInformation("Mockdaten erzeugt");
                 }
             }
 
