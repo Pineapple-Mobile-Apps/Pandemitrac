@@ -21,6 +21,11 @@ namespace Pandemitrac.Server
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureAppConfiguration(options =>
+                {
+                    options
+                        .AddEnvironmentVariables();
                 });
     }
 }
