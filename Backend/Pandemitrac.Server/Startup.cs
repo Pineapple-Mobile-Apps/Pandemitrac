@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading;
-using MailKit;
 using MailKit.Net.Smtp;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
@@ -18,6 +17,7 @@ using Microsoft.OData.Edm;
 using Pandemitrac.Server.Logic;
 using Pandemitrac.Server.Logic.Core;
 using Pandemitrac.Server.Logic.Input;
+using Pandemitrac.Server.Logic.Mail;
 using Pandemitrac.Server.Models;
 using Pandemitrac.Server.Models.Core;
 using Pandemitrac.Server.Models.Input;
