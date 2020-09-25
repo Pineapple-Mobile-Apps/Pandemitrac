@@ -43,7 +43,7 @@ namespace Pandemitrac.Server.Controllers
         [HttpGet]
         public virtual IQueryable<T> Get() => GetEntitySet().AsQueryable();
 
-        [ODataRoute("({id})")]
+        [ODataRoute("({key})")]
         [EnableQuery(MaxExpansionDepth = 20)]
         [HttpGet]
         public virtual async Task<IActionResult> Get([FromODataUri] int key)
@@ -60,7 +60,7 @@ namespace Pandemitrac.Server.Controllers
 
         #region Update
 
-        [ODataRoute("({id})")]
+        [ODataRoute("({key})")]
         [HttpPatch]
         public virtual async Task<IActionResult> Patch([FromODataUri] int key, Delta<T> deltaEntity)
         {
@@ -74,7 +74,7 @@ namespace Pandemitrac.Server.Controllers
             return Ok(entity);
         }
 
-        [ODataRoute("({id})")]
+        [ODataRoute("({key})")]
         [HttpPut]
         public virtual async Task<IActionResult> Put([FromODataUri] int key, T entity)
         {
@@ -91,7 +91,7 @@ namespace Pandemitrac.Server.Controllers
 
         #region Delete
 
-        [ODataRoute("({id})")]
+        [ODataRoute("({key})")]
         [HttpDelete]
         public virtual async Task<IActionResult> Delete([FromODataUri] int key)
         {
