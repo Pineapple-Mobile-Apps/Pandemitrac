@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MailKit;
+using MailKit.Net.Smtp;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -57,6 +59,9 @@ namespace Pandemitrac.Server
             {
                 o.UseMySql(Configuration.GetConnectionString("dbConnectionString"));
             });
+
+            services.AddTransient<ISmtpClient, SmtpClient>();
+            services.AddScoped<MailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
