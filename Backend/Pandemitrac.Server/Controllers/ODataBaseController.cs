@@ -25,7 +25,7 @@ namespace Pandemitrac.Server.Controllers
         #region Create
 
         [ODataRoute]
-        public virtual async Task<IActionResult> Create(T entity)
+        public virtual async Task<IActionResult> Create([FromBody] T entity)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

@@ -19,7 +19,7 @@ namespace Pandemitrac.Server.Controllers
         }
 
         [ODataRoute]
-        public override async Task<IActionResult> Create(Visitor visitor)
+        public override async Task<IActionResult> Create([FromBody] Visitor visitor)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
