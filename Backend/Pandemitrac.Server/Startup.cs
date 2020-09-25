@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
+using Microsoft.OData.Edm;
 using Pandemitrac.Server.Logic;
 using Pandemitrac.Server.Logic.Input;
 using Pandemitrac.Server.Models;
+using Pandemitrac.Server.Models.Core;
+using Pandemitrac.Server.Models.Input;
 
 namespace Pandemitrac.Server
 {
@@ -31,9 +38,21 @@ namespace Pandemitrac.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<VisitorManager>();
-
             services.AddSwaggerGen();
             services.AddControllers();
+            services.AddOData();
+            services.AddMvcCore(options =>
+            {
+                foreach (var outputFormatter in options.OutputFormatters.OfType<OutputFormatter>().Where(x => x.SupportedMediaTypes.Count == 0))
+                {
+                    outputFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.odatatestxx-odata"));
+                }
+
+                foreach (var inputFormatter in options.InputFormatters.OfType<InputFormatter>().Where(x => x.SupportedMediaTypes.Count == 0))
+                {
+                    inputFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.odatatestxx-odata"));
+                }
+            });
             services.AddDbContext<DatabaseContext>(o =>
             {
                 o.UseMySql(Configuration.GetConnectionString("dbConnectionString"));
@@ -62,6 +81,7 @@ namespace Pandemitrac.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapODataRoute("OData", "odata", BuildEdmModel(new ODataConventionModelBuilder()));
             });
         }
 
@@ -84,6 +104,14 @@ namespace Pandemitrac.Server
                 // Erneut versuchen
                 CreateDatabase(scope, dbContext, logger);
             }
+        }
+
+        private IEdmModel BuildEdmModel(ODataModelBuilder builder)
+        {
+            builder.EntitySet<Case>("cases");
+            builder.EntitySet<Editor>("editors");
+            builder.EntitySet<Visitor>("visitors");
+            return builder.GetEdmModel();
         }
     }
 }
