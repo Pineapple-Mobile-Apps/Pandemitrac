@@ -1,41 +1,49 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter } from 'react-router-dom';
+import Home from './Home';
+import Next from './Next';
+import {
+  BrowserRouter as Router, Switch,
+  Route,
+  Link
+} from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-
-      
-      <div className='nav'>
+    <Router>
+      <div>
         <ul>
-          <li><NavLink to="/home">Home</NavLink></li>
-          <li><NavLink to="/next">Next</NavLink></li>
+          <li>
+            <Link to="/">App</Link>
+          </li>
+          <li>
+            <Link to="/home">Home</Link>
+          </li>
+          <li>
+            <Link to="/next">Next</Link>
+          </li>
         </ul>
-      </div>
 
-      <div className="App-intro">
-        <Route path='/home' exact component={Home} />
-        <Route path='/next' component={Next} />
-        <Redirect to='/home' />
-      </div>
+        <hr />
 
-    </div>
+        {/*
+          A <Switch> looks through all its children <Route>
+          elements and renders the first one whose path
+          matches the current URL. Use a <Switch> any time
+          you have multiple routes, but you want only one
+          of them to render at a time
+        */}
+        <Switch>
+          <Route path="/home">
+            <Home />
+          </Route>
+          <Route path="/next">
+            <Next />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
