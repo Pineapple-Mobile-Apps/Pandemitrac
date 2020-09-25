@@ -44,13 +44,13 @@ namespace Pandemitrac.Server.Controllers
         public virtual IQueryable<T> Get() => GetEntitySet().AsQueryable();
 
         [ODataRoute("({id})")]
-        [EnableQuery]
+        [EnableQuery(MaxExpansionDepth = 20)]
         [HttpGet]
-        public virtual async Task<IActionResult> Get([FromODataUri] int id)
+        public virtual async Task<IActionResult> Get([FromODataUri] int key)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var entity = await FindEntityAsync(id);
+            var entity = await FindEntityAsync(key);
             if (entity == null)
                 return NotFound();
             return Ok(entity);
@@ -62,11 +62,11 @@ namespace Pandemitrac.Server.Controllers
 
         [ODataRoute("({id})")]
         [HttpPatch]
-        public virtual async Task<IActionResult> Patch([FromODataUri] int id, Delta<T> deltaEntity)
+        public virtual async Task<IActionResult> Patch([FromODataUri] int key, Delta<T> deltaEntity)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var entity = await FindEntityAsync(id);
+            var entity = await FindEntityAsync(key);
             if (entity == null)
                 return NotFound();
             deltaEntity.Patch(entity);
@@ -76,11 +76,11 @@ namespace Pandemitrac.Server.Controllers
 
         [ODataRoute("({id})")]
         [HttpPut]
-        public virtual async Task<IActionResult> Put([FromODataUri] int id, T entity)
+        public virtual async Task<IActionResult> Put([FromODataUri] int key, T entity)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            if (id != entity.Id)
+            if (key != entity.Id)
                 return BadRequest();
             DatabaseContext.Entry(entity).State = EntityState.Modified;
             await DatabaseContext.SaveChangesAsync();
@@ -93,11 +93,11 @@ namespace Pandemitrac.Server.Controllers
 
         [ODataRoute("({id})")]
         [HttpDelete]
-        public virtual async Task<IActionResult> Delete([FromODataUri] int id)
+        public virtual async Task<IActionResult> Delete([FromODataUri] int key)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
-            var entity = await FindEntityAsync(id);
+            var entity = await FindEntityAsync(key);
             if (entity == null)
                 return NotFound();
             GetEntitySet().Remove(entity);
