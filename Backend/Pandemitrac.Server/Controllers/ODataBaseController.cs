@@ -40,9 +40,12 @@ namespace Pandemitrac.Server.Controllers
 
         [ODataRoute]
         [EnableQuery(MaxExpansionDepth = 20)]
+        [HttpGet]
         public virtual IQueryable<T> Get() => GetEntitySet().AsQueryable();
 
         [ODataRoute("({id})")]
+        [EnableQuery]
+        [HttpGet]
         public virtual async Task<IActionResult> Get([FromODataUri] int id)
         {
             if (!ModelState.IsValid)
@@ -58,6 +61,7 @@ namespace Pandemitrac.Server.Controllers
         #region Update
 
         [ODataRoute("({id})")]
+        [HttpPatch]
         public virtual async Task<IActionResult> Patch([FromODataUri] int id, Delta<T> deltaEntity)
         {
             if (!ModelState.IsValid)
@@ -71,6 +75,7 @@ namespace Pandemitrac.Server.Controllers
         }
 
         [ODataRoute("({id})")]
+        [HttpPut]
         public virtual async Task<IActionResult> Put([FromODataUri] int id, T entity)
         {
             if (!ModelState.IsValid)
@@ -87,6 +92,7 @@ namespace Pandemitrac.Server.Controllers
         #region Delete
 
         [ODataRoute("({id})")]
+        [HttpDelete]
         public virtual async Task<IActionResult> Delete([FromODataUri] int id)
         {
             if (!ModelState.IsValid)
