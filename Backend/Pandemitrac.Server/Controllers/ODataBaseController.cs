@@ -39,6 +39,7 @@ namespace Pandemitrac.Server.Controllers
         #region Read
 
         [ODataRoute]
+        [EnableQuery(MaxExpansionDepth = 20)]
         public virtual IQueryable<T> Get() => GetEntitySet().AsQueryable();
 
         [ODataRoute("({id})")]

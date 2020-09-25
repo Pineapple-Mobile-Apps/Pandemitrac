@@ -84,7 +84,8 @@ namespace Pandemitrac.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapODataRoute("OData", "odata", BuildEdmModel(new ODataConventionModelBuilder()));
+                endpoints.MapODataRoute("OData", "odata", BuildEdmModel(new ODataConventionModelBuilder()))
+                    .Count().Expand().Filter().OrderBy().MaxTop(null).Select();
             });
         }
 
