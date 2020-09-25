@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -44,6 +45,12 @@ namespace Pandemitrac.Server.Models.Core
         /// Kommentar 
         /// </summary>
         public string Comment { get; set; }
+
+        /// <summary>
+        /// Zeitpunkt der Statusänderung.
+        /// </summary>
+        /// <value>Automatisch gespeicherter Wert.</value>
+        public DateTime DateTime { get; set; }
     }
 
 }
