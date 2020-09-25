@@ -5,7 +5,7 @@ namespace Pandemitrac.Server.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public abstract class BaseController
+    public abstract class BaseController : ControllerBase
     {
         protected DatabaseContext DatabaseContext { get; }
 

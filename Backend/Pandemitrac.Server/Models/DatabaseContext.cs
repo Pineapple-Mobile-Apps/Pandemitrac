@@ -10,7 +10,7 @@ namespace Pandemitrac.Server.Models
         public DbSet<ChangeDependentSubjectStateEntry> ChangeDependentSubjectStateEntries { get; set; }
         public DbSet<DependentSubject> DependentSubjects { get; set; }
         public DbSet<Editor> Editors { get; set; }
-        public DbSet<Visitor> Subjects { get; set; }
+        public DbSet<Visitor> Visitors { get; set; }
         
         public DatabaseContext(DbContextOptions options) : base(options)
         {
