@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Home from './Home';
@@ -8,22 +8,29 @@ import {
   Route,
   Link
 } from 'react-router-dom';
+import { Collapse, Nav, Navbar, NavbarBrand, NavbarText, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 
 function App() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
   return (
     <Router>
       <div>
-        <ul>
-          <li>
-            <Link to="/">App</Link>
-          </li>
-          <li>
-            <Link to="/home">Home</Link>
-          </li>
-          <li>
-            <Link to="/next">Next</Link>
-          </li>
-        </ul>
+        <Navbar color="light" light expand="md">
+          <NavbarBrand href="/" >Kontaktverfolgung</NavbarBrand>
+          <NavbarToggler onClick={toggle} />
+          <Collapse isOpen={isOpen} navbar>
+            <Nav className="mr-auto" navbar>            <NavItem>
+              <NavLink href="/home">Übersicht der Daten</NavLink>
+            </NavItem>
+              <NavItem>
+                <NavLink href="/next">Erfassung neuer Daten</NavLink>
+              </NavItem>
+            </Nav>
+            <NavbarText>Toller Text</NavbarText>
+          </Collapse>
+        </Navbar>
 
         <hr />
 
