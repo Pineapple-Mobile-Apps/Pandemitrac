@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using MailKit.Net.Smtp;
@@ -41,6 +42,7 @@ namespace Pandemitrac.Server
             services.AddScoped<MailService>();
             services.AddScoped<DependentSubjectManager>();
             services.AddScoped<VisitorManager>();
+            services.AddScoped<IEqualityComparer<Location>, LocationComparer>();
             services.AddSwaggerGen();
             services.AddControllers();
             services.AddOData();
