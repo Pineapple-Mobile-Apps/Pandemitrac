@@ -26,13 +26,20 @@ namespace Pandemitrac.Server.Logic
             _db.Visitors.Add(visitor);
             _db.SaveChanges();
 
+            var editor = new Editor
+            {
+                Name = "Beatrice Henrich"
+            };
+            _db.Editors.Add(editor);
+            _db.SaveChanges();
+
             var @case = new Case
             {
                 SubjectId = visitor.Id,
-                Created = DateTime.Now
+                Created = DateTime.Now,
+                EditorId = editor.Id
             };
             _db.Cases.Add(@case);
-
             _db.SaveChanges();
         }
 
