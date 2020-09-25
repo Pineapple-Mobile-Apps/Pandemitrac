@@ -59,6 +59,7 @@ namespace Pandemitrac.Server
             services.AddDbContext<DatabaseContext>(o =>
             {
                 o.UseMySql(Configuration.GetConnectionString("dbConnectionString"));
+                o.UseLazyLoadingProxies();
             });
         }
 
@@ -114,6 +115,7 @@ namespace Pandemitrac.Server
         {
             builder.EntitySet<Case>("cases");
             builder.EntitySet<Editor>("editors");
+            builder.EntitySet<Location>("locations");
             builder.EntitySet<Visitor>("visitors");
             return builder.GetEdmModel();
         }
