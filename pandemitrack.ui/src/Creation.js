@@ -7,6 +7,23 @@ let Next = () => {
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   }
+
+  //Nutzung des verschachtelten Objektes
+  const [caseData, setCaseData] = useState({
+    Created: new Date(),
+    TestDate: new Date(),
+    PositivTestDate: null,
+    QuarantineBegin: null,
+    QuarantineEnd: null,
+    Subject: {
+      Name: "",
+      Phone: "",
+      Mail: "",
+      PostCode: "",
+      City: ""
+    }
+  });
+
   //Case
   const [testDate, setTestDate] = useState("");
   const [positivTestDate, setPositivTestDate] = useState("");
@@ -185,7 +202,7 @@ let Next = () => {
                 <FormGroup>
                   <Label for="locationName">Name des Ortes / der Veranstaltung</Label>
                   <Input type="text" name="locationName" id="locationName" value={locationName} onChange={e => setLocationName(e.currentTarget.value)} placeholder="Name des Ortes" />
-                </FormGroup>                
+                </FormGroup>
                 <FormGroup>
                   <Label for="locationContactPerson">Kontaktperson</Label>
                   <Input type="text" name="locationContactPerson" id="locationContactPerson" value={locationContactPerson} onChange={e => setLocationContactPerson(e.currentTarget.value)} placeholder="(optional) Ansprechpartner Vorort" />
