@@ -63,10 +63,10 @@ namespace Pandemitrac.Server.Logic.Input
         }
 
         /// <summary>
-        /// Erzeugt einen Besucher
+        /// Erzeugt einen Besucher (ohne Bindungen)
         /// </summary>
         /// <param name="visitor">Besucher</param>
-        /// <returns></returns>
+        /// <returns>Async</returns>
         public async Task CreateVisitorAsync(Visitor visitor)
         {
             var existingVisitor = CheckForDuplicate(visitor);
@@ -82,6 +82,12 @@ namespace Pandemitrac.Server.Logic.Input
             }
         }
 
+        /// <summary>
+        /// Erzeugt einen Besucher abhängig zu einem Fall
+        /// </summary>
+        /// <param name="visitor">Besucher</param>
+        /// <param name="caseId">Fall Id</param>
+        /// <returns>Async</returns>
         public async Task CreateDependingVisitorAsync(Visitor visitor, int caseId)
         {
             await CreateVisitorAsync(visitor);
