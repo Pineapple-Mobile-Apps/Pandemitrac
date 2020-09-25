@@ -50,10 +50,11 @@ namespace Pandemitrac.Server.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var entity = await FindEntityAsync(key);
-            if (entity == null)
+            var entries = GetEntitySet().Where(o => o.Id == key);
+            
+            if (await entries.CountAsync() == 0)
                 return NotFound();
-            return Ok(entity);
+            return Ok(SingleResult.Create(entries));
         }
 
         #endregion
