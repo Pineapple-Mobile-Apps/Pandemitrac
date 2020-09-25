@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Col, Container, FormText, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Dropdown, TabContent, TabPane, Nav, NavItem, NavLink, Col, Container, FormText, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import SimpleReactValidator from 'simple-react-validator';
 import classnames from 'classnames';
-import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 
 SimpleReactValidator.addLocale('de', {
@@ -23,17 +22,32 @@ const App = (props) => {
   const [validator, setValidator] = useState(new SimpleReactValidator({ locale: 'de' }));
   const [dummy, setDummy] = useState(0);
   const [activeTab, setActiveTab] = useState('1');
+  const [cases, setCases] = useState([]);
+  const [selectoption, setselectoption] = useState('1');
+  useEffect(async () => {
+    let response = await fetch("/odata/cases?$expand=Subject");
+    let data = await response.json();
+    setCases(data.value);
+  }, [])
+
+  const onChangeMulti = (event) => {
+    debugger;
+    let index = event.currentTarget.selectedIndex;
+    setselectoption(cases[index].Id);
+  }
+
 
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   }
   const options = [
-    
+
   ];
- 
+
   const onFormSubmit = async () => {
+    let string = "/api/Visitor/createDepending?caseid=" + selectoption;
     if (validator.allValid()) {
-      let result = await fetch("/api/Visitor/createDepending?caseid=1", {
+      let result = await fetch(string, {
         "method": "POST",
         "headers": {
           "content-type": "application/json"
@@ -65,7 +79,17 @@ const App = (props) => {
   return (
     <div>
       <div>
-  <Dropdown options={options} placeholder="Select an option" />;
+        <Label for="name">Fall auswählen</Label>
+        <Input type="select" selectedIndex={selectoption}
+          onChange={e =>
+            onChangeMulti(e)}
+          name="select" id="exampleSelect">
+          {cases.map(c =>
+            <option key={c.Id}>{c.Subject.Name}</option>
+          )}
+
+
+        </Input>
 
       </div>
       <div>
@@ -95,7 +119,7 @@ const App = (props) => {
                   <Col md={8}>
                     <FormGroup>
                       <Label for="name">Name</Label>
-                      <Input type="text" value={name} onChange={e => setName(e.currentTarget.value)} id="lastName" placeholder="Geben sie den Nachnamen ein" />
+                      <Input type="text" value={name} onChange={(event) => { setName(event.currentTarget.value) }} id="lastName" placeholder="Geben sie den Nachnamen ein" />
                       {validator.message('name', { name }, 'required|alpha_dash_space')}
                     </FormGroup>
                   </Col>
