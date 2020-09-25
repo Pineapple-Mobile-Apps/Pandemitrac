@@ -26,6 +26,7 @@ namespace Pandemitrac.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSwaggerGen();
+            services.AddControllers();
             services.AddDbContext<DatabaseContext>(o =>
             {
                 o.UseMySql(Configuration.GetConnectionString("dbConnectionString"));
@@ -46,10 +47,7 @@ namespace Pandemitrac.Server
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
