@@ -59,7 +59,7 @@ function App() {
         <Route path="/home">
           <Home />
         </Route>
-        <Route path="/creation">
+        <Route path="/creation" >
           <Creation />
         </Route>
         <Route path="/import" exact>
