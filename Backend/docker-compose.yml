@@ -8,7 +8,7 @@ services:
     depends_on:
       - db
     environment:
-      - ConnectionString::dbConnectionString=Server=db;Database=dbPandemitrac;Uid=root;Pwd=root;
+      - ConnectionStrings::dbConnectionString=Server=db;Database=dbPandemitrac;Uid=root;Pwd=root;
 
   db:
     image: mysql
