@@ -17,14 +17,25 @@ namespace Pandemitrac.Server.Controllers
         }
 
         /// <summary>
-        /// Legt einen neuen Besucher an
+        /// Erstellt einen alleinstehenden Besucher
         /// </summary>
         /// <param name="visitor">Besucher</param>
         /// <returns>Ok</returns>
-        [HttpPost("{caseId}")]
-        public async Task<IActionResult> CreateVisitor(Visitor visitor, [FromRoute] int caseId)
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateVisitor(Visitor visitor) {
+            await _visitorManager.CreateVisitorAsync(visitor);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Legt einen neuen Besucher an, welcher zu einem Fall gehört
+        /// </summary>
+        /// <param name="visitor">Besucher</param>
+        /// <returns>Ok</returns>
+        [HttpPost("createDepending")]
+        public async Task<IActionResult> CreateVisitor([FromBody] Visitor visitor, [FromQuery] int caseId)
         {
-            await _visitorManager.CreateVisitorAsync(visitor, caseId);
+            await _visitorManager.CreateDependingVisitorAsync(visitor, caseId);
             return Ok();
         }
     }

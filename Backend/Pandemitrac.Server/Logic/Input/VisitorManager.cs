@@ -20,11 +20,16 @@ namespace Pandemitrac.Server.Logic.Input
             _db = db;
         }
 
-        public async Task CreateVisitorAsync(Visitor visitor, int caseId)
+        public async Task CreateVisitorAsync(Visitor visitor)
+        {
+            _db.Visitors.Add(visitor);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task CreateDependingVisitorAsync(Visitor visitor, int caseId)
         {
             // TODO: Duplikat prüfen
-
-            _db.Visitors.Add(visitor);
+            await CreateVisitorAsync(visitor);
 
             var dependentSubject = new DependentSubject
             {
