@@ -6,11 +6,11 @@ namespace Pandemitrac.Server.Models
 {
     public class DatabaseContext : DbContext
     {
-        public DbSet<Case> Cases { get; }
-        public DbSet<ChangeDependentSubjectStateEntry> ChangeDependentSubjectStateEntries { get; }
-        public DbSet<DependentSubject> DependentSubjects { get; }
-        public DbSet<Editor> Editors { get; }
-        public DbSet<Visitor> Subjects { get; }
+        public DbSet<Case> Cases { get; set; }
+        public DbSet<ChangeDependentSubjectStateEntry> ChangeDependentSubjectStateEntries { get; set; }
+        public DbSet<DependentSubject> DependentSubjects { get; set; }
+        public DbSet<Editor> Editors { get; set; }
+        public DbSet<Visitor> Subjects { get; set; }
         
         public DatabaseContext(DbContextOptions options) : base(options)
         {
