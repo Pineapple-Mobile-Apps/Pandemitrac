@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,13 +20,13 @@ namespace Pandemitrac.Server.Models.Core
         /// </summary>
         /// <value></value>
         [ForeignKey("DependentSubjectId")]
-        public DependentSubject DependentSubject {get;set;}
+        public DependentSubject DependentSubject { get; set; }
 
         /// <summary>
         /// Bearbeiter
         /// </summary>
         [Required]
-        public int EditorId {get;set;}
+        public int EditorId { get; set; }
 
         /// <summary>
         /// Bearbeiter
@@ -44,6 +45,12 @@ namespace Pandemitrac.Server.Models.Core
         /// Kommentar 
         /// </summary>
         public string Comment { get; set; }
+
+        /// <summary>
+        /// Zeitpunkt der Statusänderung.
+        /// </summary>
+        /// <value>Automatisch gespeicherter Wert.</value>
+        public DateTime DateTime { get; set; }
     }
 
 }
