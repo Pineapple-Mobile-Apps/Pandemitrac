@@ -4,6 +4,8 @@ import './App.css';
 import Launch from './Launch';
 import Home from './Home';
 import Next from './Next';
+import Import from './Import';
+
 import {
   BrowserRouter as Router, Switch,
   Route,
@@ -11,6 +13,7 @@ import {
 } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarBrand, NavbarText, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import CaseDetails from './CaseDetails';
+import Recover from './Importer/Recover';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,8 +32,11 @@ function App() {
             <NavItem>
               <NavLink href="/next">Erfassung neuer Daten</NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink href="/import">Datenimport</NavLink>
+            </NavItem>
           </Nav>
-          <NavbarText>Toller Text</NavbarText>
+          <NavbarText>rku.it GmbH</NavbarText>
         </Collapse>
       </Navbar>
 
@@ -55,6 +61,12 @@ function App() {
         </Route>
         <Route path="/next">
           <Next />
+        </Route>
+        <Route path="/import" exact>
+          <Import />
+        </Route>
+        <Route path="/import/recover" exact>
+          <Recover />
         </Route>
       </Switch>
       </div>
