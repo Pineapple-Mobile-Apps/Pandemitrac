@@ -35,7 +35,7 @@ function App() {
               <NavLink href="/import">Datenimport</NavLink>
             </NavItem>
           </Nav>
-          <NavbarText>Toller Text</NavbarText>
+          <NavbarText>rku.it GmbH</NavbarText>
         </Collapse>
       </Navbar>
 
