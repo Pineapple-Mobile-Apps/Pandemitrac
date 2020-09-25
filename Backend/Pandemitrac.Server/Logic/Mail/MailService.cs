@@ -10,13 +10,19 @@ using Scriban;
 
 namespace Pandemitrac.Server.Logic.Mail
 {
-    public class MailService
+    /// <summary>
+    /// Stellt Funktionalitäten zum Versenden von Emails zur Verfügung.
+    /// </summary>
+    public sealed class MailService : IAsyncDisposable
     {
         private IConfiguration Configuration { get; }
 
-        public MailService(IConfiguration configuration)
+        private ISmtpClient SmtpClient { get; }
+
+        public MailService(IConfiguration configuration, ISmtpClient smtpClient)
         {
             Configuration = configuration;
+            SmtpClient = smtpClient;
         }
 
         /// <summary>
@@ -46,16 +52,25 @@ namespace Pandemitrac.Server.Logic.Mail
         {
             var mailSettings = Configuration.GetSection("MailSettings");
             var sender = mailSettings.GetValue<string>("Sender");
-            var host = mailSettings.GetValue<string>("SmtpServer");
-            var port = mailSettings.GetValue<short>("SmtpPort");
-            var username = mailSettings.GetValue<string>("SmtpUsername");
-            var password = mailSettings.GetValue<string>("SmtpPassword");
-            using (var client = new SmtpClient())
+            await EnsureClientConnected(mailSettings);
+            await SmtpClient.SendAsync(CreateMimeMessage(sender, receiver, subject, content));
+        }
+
+        /// <summary>
+        /// Stellt sicher, dass der <see cref="SmtpClient"/> verbunden ist.
+        /// </summary>
+        /// <param name="mailSettings">Verweis auf den Settings-Bereich in dem die Smtp-Einstellungen enthalten sind.</param>
+        /// <returns>Informationen zum asynchronen Vorgang.</returns>
+        private async Task EnsureClientConnected(IConfigurationSection mailSettings)
+        {
+            if (!SmtpClient.IsConnected)
             {
-                await client.ConnectAsync(host, port);
-                await client.AuthenticateAsync(username, password);
-                await client.SendAsync(CreateMimeMessage(sender, receiver, subject, content));
-                await client.DisconnectAsync(true);
+                var host = mailSettings.GetValue<string>("SmtpServer");
+                var port = mailSettings.GetValue<short>("SmtpPort");
+                var username = mailSettings.GetValue<string>("SmtpUsername");
+                var password = mailSettings.GetValue<string>("SmtpPassword");
+                await SmtpClient.ConnectAsync(host, port);
+                await SmtpClient.AuthenticateAsync(username, password);
             }
         }
 
@@ -76,5 +91,14 @@ namespace Pandemitrac.Server.Logic.Mail
             message.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = content };
             return message;
         }
+
+        #region IAsyncDisosable support
+
+        public async ValueTask DisposeAsync()
+        {
+            await SmtpClient.DisconnectAsync(true);
+        }
+
+        #endregion
     }
 }
