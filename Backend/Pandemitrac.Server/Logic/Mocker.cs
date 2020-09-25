@@ -20,10 +20,30 @@ namespace Pandemitrac.Server.Logic
         {
             var visitor = new Visitor
             {
-                Name = "Tim Ittermann"
+                Name = "Tim Ittermann",
+                Address = "Musterstr. 123",
+                City = "Herne",
+                Mail = "tim.ittermann@rku-it.de",
+                Phone = "+49151123456",
+                PostCode = 44652
             };
 
             _db.Visitors.Add(visitor);
+            _db.Visitors.AddRange(new Visitor
+            {
+                Name = "Sven Treutler"
+            }, new Visitor
+            {
+                Name = "Dennis Terhoeven"
+            },
+            new Visitor
+            {
+                Name = "Jan Böhm"
+            },
+            new Visitor
+            {
+                Name = "Rudi Schefer"
+            });
             _db.SaveChanges();
 
             var editor = new Editor
@@ -39,7 +59,12 @@ namespace Pandemitrac.Server.Logic
                 Created = DateTime.Now,
                 EditorId = editor.Id
             };
-            _db.Cases.Add(@case);
+            _db.Cases.AddRange(@case, new Case
+            {
+                SubjectId = 2,
+                Created = DateTime.Now,
+                EditorId = editor.Id
+            });
             _db.SaveChanges();
         }
 
