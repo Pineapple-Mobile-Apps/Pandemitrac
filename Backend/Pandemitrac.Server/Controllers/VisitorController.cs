@@ -40,6 +40,7 @@ namespace Pandemitrac.Server.Controllers
             return Ok();
         }
 
+        [HttpGet]
         public IEnumerable<Visitor> GetVisitors() {
             return DatabaseContext.Visitors;
         }
