@@ -27,6 +27,7 @@ namespace Pandemitrac.Server.Controllers
         }
 
         [HttpGet]
+        [Route("({id})")]
         public async Task<IActionResult> GetCaseAsync(int id)
         {
             var @case = await DatabaseContext.Cases.FindAsync(id);
