@@ -63,7 +63,7 @@ namespace Pandemitrac.Server.Models.Core
         /// ID des Fall-Sachberarbeiters.
         /// </summary>
         /// <value>Automatisch gespeicherter Wert.</value>
-        public int EditorId { get; set; }
+        public int? EditorId { get; set; }
 
         /// <summary>
         /// Sachbearbeiter des Falls.
