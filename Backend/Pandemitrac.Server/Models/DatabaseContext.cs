@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Pandemitrac.Server
+namespace Pandemitrac.Server.Models
 {
     public class DatabaseContext : DbContext
     {
