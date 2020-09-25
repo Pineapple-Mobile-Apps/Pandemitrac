@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Launch from './Launch';
 import Home from './Home';
-import Next from './Next';
+import Creation from './Creation';
 import Import from './Import';
 
 import {
@@ -26,13 +26,13 @@ function App() {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>            <NavItem>
-            <NavLink href="/home">Übersicht der Daten</NavLink>
+            <NavLink href="/home">Übersicht</NavLink>
           </NavItem>
             <NavItem>
-              <NavLink href="/next">Erfassung neuer Daten</NavLink>
+              <NavLink href="/creation">Erfassung</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/import">Datenimport</NavLink>
+              <NavLink href="/import">Massenimport</NavLink>
             </NavItem>
           </Nav>
           <NavbarText>rku.it GmbH</NavbarText>
@@ -55,8 +55,8 @@ function App() {
         <Route path="/home">
           <Home />
         </Route>
-        <Route path="/next">
-          <Next />
+        <Route path="/creation">
+          <Creation />
         </Route>
         <Route path="/import" exact>
           <Import />
