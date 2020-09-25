@@ -39,6 +39,7 @@ namespace Pandemitrac.Server
 
             services.AddSwaggerGen();
             services.AddControllers();
+            services.AddOData();
             services.AddDbContext<DatabaseContext>(o =>
             {
                 o.UseMySql(Configuration.GetConnectionString("dbConnectionString"));
