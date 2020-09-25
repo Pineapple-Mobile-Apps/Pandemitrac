@@ -1,0 +1,7 @@
+<h1>Statusnachricht</h1>
+<p>
+    Hallo {{ visitor.name }},
+</p>
+<p>
+    lorem ipsum dolor sit amet...
+</p
