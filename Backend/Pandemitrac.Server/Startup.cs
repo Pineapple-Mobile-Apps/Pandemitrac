@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OData.Edm;
 using Pandemitrac.Server.Logic;
+using Pandemitrac.Server.Logic.Core;
 using Pandemitrac.Server.Logic.Input;
 using Pandemitrac.Server.Models;
 using Pandemitrac.Server.Models.Core;
@@ -62,6 +63,8 @@ namespace Pandemitrac.Server
 
             services.AddTransient<ISmtpClient, SmtpClient>();
             services.AddScoped<MailService>();
+            services.AddScoped<DependentSubjectManager>();
+            services.AddScoped<VisitorManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
