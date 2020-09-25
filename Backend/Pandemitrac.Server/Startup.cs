@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Pandemitrac.Server.Models;
 
 namespace Pandemitrac.Server
@@ -37,6 +38,15 @@ namespace Pandemitrac.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using (var scope = app.ApplicationServices.CreateScope()) {
+                var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Startup>>();
+                if (dbContext.Database.EnsureCreated()) {
+                    // MOCKUP
+                    logger.LogInformation("Datenbank erzeugt");
+                }
+            }
+
             app.UseSwaggerConfig();
 
             if (env.IsDevelopment())
