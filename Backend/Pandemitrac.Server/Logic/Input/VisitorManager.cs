@@ -66,19 +66,21 @@ namespace Pandemitrac.Server.Logic.Input
         /// Erzeugt einen Besucher (ohne Bindungen)
         /// </summary>
         /// <param name="visitor">Besucher</param>
-        /// <returns>Async</returns>
-        public async Task CreateVisitorAsync(Visitor visitor)
+        /// <returns>Wurde erstellt</returns>
+        public async Task<bool> CreateVisitorAsync(Visitor visitor)
         {
             var existingVisitor = await CheckForDuplicate(visitor);
 
             if (existingVisitor != null)
             {
                 visitor.Id = existingVisitor.Id;
+                return false;
             }
             else
             {
                 _db.Visitors.Add(visitor);
                 await _db.SaveChangesAsync();
+                return true;
             }
         }
 

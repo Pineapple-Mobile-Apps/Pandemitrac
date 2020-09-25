@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Pandemitrac.Server.Logic.Input;
 using Pandemitrac.Server.Models;
@@ -7,8 +8,8 @@ using Pandemitrac.Server.Models.Input;
 
 namespace Pandemitrac.Server.Controllers
 {
-
-    public class VisitorController : BaseController
+    [ODataRoutePrefix("visitors")]
+    public class VisitorController : ODataBaseController<Visitor>
     {
         private readonly VisitorManager _visitorManager;
 
@@ -17,15 +18,19 @@ namespace Pandemitrac.Server.Controllers
             _visitorManager = visitorManager;
         }
 
-        /// <summary>
-        /// Erstellt einen alleinstehenden Besucher
-        /// </summary>
-        /// <param name="visitor">Besucher</param>
-        /// <returns>Ok</returns>
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateVisitor(Visitor visitor) {
-            await _visitorManager.CreateVisitorAsync(visitor);
-            return Ok(visitor);
+        [ODataRoute]
+        public override async Task<IActionResult> Create(Visitor visitor)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            if (await _visitorManager.CreateVisitorAsync(visitor))
+            {
+                return Created(visitor);
+            }
+            else
+            {
+                return StatusCode(208, visitor);
+            }
         }
 
         /// <summary>
@@ -33,16 +38,11 @@ namespace Pandemitrac.Server.Controllers
         /// </summary>
         /// <param name="visitor">Besucher</param>
         /// <returns>Ok</returns>
-        [HttpPost("createDepending")]
+        [HttpPost("/api/visitor/createDepending")]
         public async Task<IActionResult> CreateVisitor([FromBody] Visitor visitor, [FromQuery] int caseId)
         {
             await _visitorManager.CreateDependingVisitorAsync(visitor, caseId);
             return Ok(visitor);
-        }
-
-        [HttpGet]
-        public IEnumerable<Visitor> GetVisitors() {
-            return DatabaseContext.Visitors;
         }
     }
 
