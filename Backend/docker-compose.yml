@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  app:
+    build: ./
+    ports: 
+      - 80:80
+    depends_on:
+      - db
+    environment:
+      - ConnectionString::dbConnectionString=Server=db;Database=dbPandemitrac;Uid=root;Pwd=root;
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
