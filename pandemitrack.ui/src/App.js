@@ -16,45 +16,45 @@ function App() {
 
   const toggle = () => setIsOpen(!isOpen);
   return (
-    <Router>
-      <div>
-        <Navbar color="light" light expand="md">
-          <NavbarBrand href="/launch" >Kontaktverfolgung</NavbarBrand>
-          <NavbarToggler onClick={toggle} />
-          <Collapse isOpen={isOpen} navbar>
-            <Nav className="mr-auto" navbar>            <NavItem>
-              <NavLink href="/home">Übersicht der Daten</NavLink>
+    <Router >
+      <div >
+      <Navbar color="light" light expand="md">
+        <NavbarBrand href="/launch" >Kontaktverfolgung</NavbarBrand>
+        <NavbarToggler onClick={toggle} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="mr-auto" navbar>            <NavItem>
+            <NavLink href="/home">Übersicht der Daten</NavLink>
+          </NavItem>
+            <NavItem>
+              <NavLink href="/next">Erfassung neuer Daten</NavLink>
             </NavItem>
-              <NavItem>
-                <NavLink href="/next">Erfassung neuer Daten</NavLink>
-              </NavItem>
-            </Nav>
-            <NavbarText>Toller Text</NavbarText>
-          </Collapse>
-        </Navbar>
+          </Nav>
+          <NavbarText>Toller Text</NavbarText>
+        </Collapse>
+      </Navbar>
 
-        <hr />
+      <hr />
 
-        {/*
+      {/*
           A <Switch> looks through all its children <Route>
           elements and renders the first one whose path
           matches the current URL. Use a <Switch> any time
           you have multiple routes, but you want only one
           of them to render at a time
         */}
-        <Switch>
+      <Switch>
         <Route path="/launch">
-            <Launch />
-          </Route>
-          <Route path="/home">
-            <Home />
-          </Route>
-          <Route path="/next">
-            <Next />
-          </Route>
-        </Switch>
+          <Launch />
+        </Route>
+        <Route path="/home">
+          <Home />
+        </Route>
+        <Route path="/next">
+          <Next />
+        </Route>
+      </Switch>
       </div>
-    </Router>
+    </Router >
   );
 }
 

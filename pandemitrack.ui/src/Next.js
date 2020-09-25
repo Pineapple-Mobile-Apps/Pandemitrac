@@ -17,18 +17,18 @@ let Next = () => {
   const [mail, setMail] = useState("");
 
   const submit = async () => {
-    let result = await fetch("/api/Visitor/create", {
+    let result = await fetch("/odata/visitors", {
       "method": "POST",
       "headers": {
         "content-type": "application/json"
       },
       body: JSON.stringify({
-        name: name,
-        adress: street + " " + housenumber || "",
-        postCode: parseInt(postcode) || 0,
-        city: city || "",
-        phone: tel || null,
-        mail: mail || null
+        Name: name,
+        Adress: street + " " + housenumber || "",
+        PostCode: parseInt(postcode) || 0,
+        City: city || "",
+        Phone: tel || null,
+        Mail: mail || null
       })
     });
   };
