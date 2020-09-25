@@ -4,7 +4,7 @@ export default function useFetch(url, options, depends) {
     const [request, setRequest] = useState(null);
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(async () => {
         setIsLoading(true);
@@ -13,6 +13,7 @@ export default function useFetch(url, options, depends) {
             let json = await request.json();
             setData(json.value);
             setRequest(request);
+            setError(null);
         } catch (e) {
             setError(e);
         }

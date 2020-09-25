@@ -8,7 +8,7 @@ const Home = () => {
     const casesRequest = useFetch("/odata/cases?$expand=Subject", undefined, []);
 
     return (
-        <LoadingGuard isLoading={casesRequest.isLoading}>
+        <LoadingGuard isLoading={casesRequest.isLoading} error={casesRequest.error}>
             <Container>
                 <Table>
                     <thead>
@@ -23,6 +23,13 @@ const Home = () => {
                         {
                             casesRequest?.data?.map(d => <tr>
                                 <td>{d.Id}</td>
+                                <td>{d.Subject.Name}</td>
+                                <td>Musterbearbeiter</td>
+                                <td>
+                                    <Button color="primary" tag="a" href={`case/${d.Id}`}>
+                                        Infos
+                                    </Button>
+                                </td>
                             </tr>
                             )
                         }

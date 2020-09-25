@@ -12,6 +12,7 @@ import {
   Link
 } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarBrand, NavbarText, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import CaseDetails from './CaseDetails';
 import Recover from './Importer/Recover';
 
 function App() {
@@ -49,6 +50,9 @@ function App() {
           of them to render at a time
         */}
       <Switch>
+        <Route path="/case/:id" exact>
+          <CaseDetails />
+        </Route>
         <Route path="/launch">
           <Launch />
         </Route>
