@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Pandemitrac.Server.Logic.Input;
 using Pandemitrac.Server.Models;
 using Pandemitrac.Server.Models.Input;
 
@@ -8,19 +9,22 @@ namespace Pandemitrac.Server.Controllers
 
     public class VisitorController : BaseController
     {
+        private readonly VisitorManager _visitorManager;
 
-        public VisitorController(DatabaseContext db) : base(db) { }
+        public VisitorController(DatabaseContext db, VisitorManager visitorManager) : base(db)
+        {
+            _visitorManager = visitorManager;
+        }
 
         /// <summary>
         /// Legt einen neuen Besucher an
         /// </summary>
         /// <param name="visitor">Besucher</param>
         /// <returns>Ok</returns>
-        [HttpPost]
-        public async Task<IActionResult> CreateVisitor(Visitor visitor)
+        [HttpPost("{caseId}")]
+        public async Task<IActionResult> CreateVisitor(Visitor visitor, [FromRoute] int caseId)
         {
-            DatabaseContext.Visitors.Add(visitor);
-            await DatabaseContext.SaveChangesAsync();
+            await _visitorManager.CreateVisitorAsync(visitor, caseId);
             return Ok();
         }
     }
