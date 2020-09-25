@@ -19,9 +19,12 @@ let Next = () => {
       Name: "",
       Phone: "",
       Mail: "",
-      PostCode: "",
+      Address: "",
+      PostCode: 0,
       City: ""
-    }
+    },
+    Visits: [],
+    DependentSubjects: []
   });
 
   //Case
