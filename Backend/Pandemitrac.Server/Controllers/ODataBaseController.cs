@@ -69,6 +69,18 @@ namespace Pandemitrac.Server.Controllers
             return Ok(entity);
         }
 
+        [ODataRoute("({id})")]
+        public virtual async Task<IActionResult> Put([FromODataUri] int id, T entity)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            if (id != entity.Id)
+                return BadRequest();
+            DatabaseContext.Entry(entity).State = EntityState.Modified;
+            await DatabaseContext.SaveChangesAsync();
+            return Updated(entity);
+        }
+
         #endregion
 
         #region Delete
