@@ -1,17 +1,17 @@
 export function getAvailableStates(currentState) {
     switch (currentState) {
         case "Pending":
-            break;
+            return [ "NotAvailable", "TestPending" ];
         case "NotAvailable":
-            break;
+            return [ "Testing" ];
         case "TestPending":
-            break;
+            return [ "Testing" ];
         case "Testing":
-            break;
+            return [ "Positiv", "Negativ" ];
         case "Positiv":
-            break;
+            return [  ];
         case "Negativ":
-            break;
+            return [  ];
         default:
             throw new Error("Unknown State");
     }
@@ -22,15 +22,15 @@ export function stringifyState(state) {
         case "Pending":
             return "Kontakt ausstehend";
         case "NotAvailable":
-            break;
+            return "Kontakt nicht erreichbar";
         case "TestPending":
-            break;
+            return "Test ausstehend";
         case "Testing":
-            break;
+            return "Wird getestet";
         case "Positiv":
-            break;
+            return "Test positiv";
         case "Negativ":
-            break;
+            return "Test negativ";
         default:
             throw new Error("Unknown State");
     }
