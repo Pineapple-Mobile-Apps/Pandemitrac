@@ -68,6 +68,12 @@ function App() {
         <Route path="/import/recover" exact>
           <Recover />
         </Route>
+        <Route path="/import/recover/:LocationId/:Begin/:End"  exact>
+          
+          <Recover />
+        </Route>
+
+        
       </Switch>
       </div>
     </Router >

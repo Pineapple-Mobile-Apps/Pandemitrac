@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
+import useFetch from "../useFetch";
+import { useParams } from "react-router-dom";
 import { Button, Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle, Col, Container, Form, FormGroup, Input, Jumbotron, Label, Row } from 'reactstrap';
 
 let Recover = () => {
+    const { id } = useParams();
 
-    const [partner, setPartner] = useState("");
+    const caseRequest = useFetch(`/odata/locations(${id})`, undefined, [id]);
+
+    const { data } = caseRequest;
+
+    const [partner, setPartner] = useState(data?.Name);
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
 
@@ -35,7 +42,7 @@ let Recover = () => {
                 <Col xs="6" sm="8"> <Form>
                     <FormGroup>
                         <Label for="partner">Name des Recover Partner</Label>
-                        <Input type="text" name="partner" id="partner" value={partner} onChange={e => setPartner(e.currentTarget.value)} placeholder="Voller Name" />
+                        <Input type="text" name="partner" id="partner" disabled= {data?.Name} value={partner} onChange={e => setPartner(e.currentTarget.value)} placeholder="Voller Name" />
                     </FormGroup>
                     <FormGroup>
                         <Label for="start">Beginnzeitraum des Abrufs</Label>
