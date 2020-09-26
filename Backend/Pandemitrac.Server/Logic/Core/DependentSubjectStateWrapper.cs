@@ -65,6 +65,28 @@ namespace Pandemitrac.Server.Logic.Core
             return null;
         }
 
+        public async Task Set(DependentSubjectState newState)
+        {
+            switch (newState)
+            {
+                case DependentSubjectState.NotAvailable:
+                    await SetNotAvailable();
+                    break;
+                case DependentSubjectState.TestPending:
+                    await SetTestPending();
+                    break;
+                case DependentSubjectState.Testing:
+                    await SetTesting();
+                    break;
+                case DependentSubjectState.Positiv:
+                    await SetPositive();
+                    break;
+                case DependentSubjectState.Negativ:
+                    await SetNegative();
+                    break;
+            }
+        }
+
         /// <summary>
         /// Löst den Übergang auf den <see cref="DependentSubjectState.NotAvailable"/>-Zustand aus.
         /// </summary>
