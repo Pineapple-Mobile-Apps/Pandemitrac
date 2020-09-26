@@ -54,11 +54,12 @@ namespace Pandemitrac.Server.Logic.Core
         /// Fabrikmethode zum Erzeugen einer <see cref="ChangeDependentSubjectStateEntry"/>-Instanz.
         /// </summary>
         /// <param name="dependentSubjectId">ID des <see cref="DependentSubject"/>s, dem der Eintrag zugeordnet werden soll.</param>
+        /// <param name="state">Initialer Status des Änderungseintrags (optional).</param>
         /// <returns>Erzeugte <see cref="ChangeDependentSubjectStateEntry"/>-Instanz.</returns>
-        protected virtual ChangeDependentSubjectStateEntry CreateState(int dependentSubjectId) => new ChangeDependentSubjectStateEntry()
+        protected virtual ChangeDependentSubjectStateEntry CreateState(int dependentSubjectId, DependentSubjectState state) => new ChangeDependentSubjectStateEntry()
         {
             DependentSubjectId = dependentSubjectId,
-            CurrentState = DependentSubjectState.Pending,
+            CurrentState = state,
             DateTime = DateTime.Now
         };
     }
