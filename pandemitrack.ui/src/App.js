@@ -30,7 +30,7 @@ function App() {
             <NavLink href="/home">Übersicht</NavLink>
           </NavItem>
             <NavItem>
-              <NavLink href="/creation">Erfassung</NavLink>
+              <NavLink href="/case">Erfassung</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="/import">Massenimport</NavLink>
@@ -59,7 +59,7 @@ function App() {
         <Route path="/home">
           <Home />
         </Route>
-        <Route path="/creation" >
+        <Route path="/case" exact >
           <Creation />
         </Route>
         <Route path="/import" exact>

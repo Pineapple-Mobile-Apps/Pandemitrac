@@ -22,6 +22,7 @@ let Next = () => {
       Mail: "",
       Address: "",
       PostCode: 0,
+      Tel: "",
       City: ""
     },
     Visits: [],
@@ -59,6 +60,24 @@ let Next = () => {
   const [visits, setVisits] = useState([]);
 
   const submit = async () => {
+    let dataObject = {
+      Created: new Date(),
+      TestDate: testDate,
+      PositivTestDate: positivTestDate,
+      QuarantineBegin: quarantineBegin,
+      QuarantineEnd: quarantineEnd,
+      Subject: {
+        Name: name,
+        Mail: mail || null,
+        Address: street + " " + housenumber || "",
+        PostCode: parseInt(postcode) || 0,
+        Phone: tel || null,
+        City: city || ""
+      },
+      Visits: [],
+      DependentSubjects: []
+    };
+    
     let result = await fetch("/odata/visitors", {
       "method": "POST",
       "headers": {
