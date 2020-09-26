@@ -30,11 +30,23 @@ namespace Pandemitrac.Server.Logic.Core
                 orderby stateEntry.DateTime descending
                 select stateEntry;
             if ((await subjectStateHistory.CountAsync()) == 0)
+            return subjectStateHistory.First();
+        }
+
+        /// <summary>
+        /// Ändert den aktuellen Status eines <see cref="DependentSubject"/>s.
+        /// </summary>
+        /// <param name="dependentSubject">Verweis auf den <see cref="DependentSubject"/>.</param>
+        /// <param name="newState">Neuer Status.</param>
+        /// <returns>Informationen zum asynchronen Vorgang.</returns>
+        public async Task UpdateDependentSubjectStateAsync(DependentSubject dependentSubject, DependentSubjectState newState)
             {
-                await stateEntries.AddAsync(CreateState(dependentSubject.Id));
+            var stateEntries = DatabaseContext.ChangeDependentSubjectStateEntries;
+            var entry = CreateState(dependentSubject.Id, newState);
+            await stateEntries.AddAsync(entry);
                 await DatabaseContext.SaveChangesAsync();
             }
-            return subjectStateHistory.First();
+
         }
 
         /// <summary>
