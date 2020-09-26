@@ -34,13 +34,13 @@ function VisitEditor(props) {
         </CardHeader>
         <CardBody>
             <Label>Besuchsbeginn</Label>
-            <Input type="datetime-local" {...input("Begin")} />
+            <Input type="datetime-local" {...input("Begin", "date")} />
 
             <Label>Besuchsende</Label>
-            <Input type="datetime-local" {...input("End")} />
+            <Input type="datetime-local" {...input("End", "date")} />
 
             <Label>Kontaktdatum</Label>
-            <Input type="datetime-local" {...input("Contacted")} />
+            <Input type="datetime-local" {...input("Contacted", "date")} />
 
             <LocationEditor location={props.visit.Location} setLocation={e => changer("Location", e)} />
         </CardBody>
@@ -64,7 +64,7 @@ function LocationEditor(props) {
         <Input {...input("Address")} />
 
         <Label>Postleitzahl</Label>
-        <Input {...input("PostCode")} type="number" />
+        <Input {...input("PostCode", "number")} type="number" />
 
         <Label>Stadt</Label>
         <Input {...input("City")} />

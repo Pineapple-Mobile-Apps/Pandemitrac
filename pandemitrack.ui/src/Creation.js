@@ -3,8 +3,12 @@ import classnames from 'classnames';
 import { Button, Form, FormGroup, Label, Input, FormText, Container, Nav, NavLink, NavItem, TabContent, TabPane, Row, Col, Alert } from 'reactstrap';
 import VisitsEditor from './VisitsEditor';
 import { createChanger, createInput } from './utils/StateValueTools';
+import DependentSubjectsEditor from './DependentSubjectEditor';
 
 const Next = () => {
+
+  const [saveState, setSaveState] = useState(); // None, Saving, Error 
+
   //Verwaltung der Tabs deren Status
   const [activeTab, setActiveTab] = useState("person");
   const toggle = tab => {
@@ -24,7 +28,6 @@ const Next = () => {
       Mail: "",
       Address: "",
       PostCode: 0,
-      Tel: "",
       City: ""
     },
     Visits: [],
@@ -35,26 +38,35 @@ const Next = () => {
   const changer = createChanger(caseData, setCaseData);
 
   const submit = async () => {
-    console.log("SUBMIT", caseData);
+    setSaveState("Saving");
 
-    /*let result = await fetch("/odata/visitors", {
+    let result = await fetch("/odata/cases", {
       "method": "POST",
       "headers": {
         "content-type": "application/json"
       },
-      body: JSON.stringify({
-        Name: name,
-        Address: street + " " + housenumber || "",
-        PostCode: parseInt(postcode) || 0,
-        City: city || "",
-        Phone: tel || null,
-        Mail: mail || null
-      })
-    });*/
+      body: JSON.stringify(caseData)
+    });
+
+    if (result.status == 201) {
+      window.open("/home", "_self");
+    }
+    else {
+      setSaveState("error");
+    }
   };
+
+  if (saveState === "Saving") {
+    return <Alert color="primary">
+      Speichere Daten bitte waren...
+    </Alert>;
+  }
 
   return (
     <Container>
+      {saveState === "Error" && <Alert color="error">
+        Daten konnten nicht gespeichert werden. Bitte erneut versuchen.
+      </Alert>}
       <Nav tabs>
         <NavItem>
           <NavLink className={classnames({ active: activeTab === 'person' })}
@@ -121,19 +133,19 @@ const Next = () => {
               <Form>
                 <FormGroup>
                   <Label for="testDate">Datum des Testes</Label>
-                  <Input type="datetime-local" name="testDate" id="testDate" {...input("TestDate")} placeholder="Datum des Coronatest" />
+                  <Input type="datetime-local" name="testDate" id="testDate" {...input("TestDate", "date")} placeholder="Datum des Coronatest" />
                 </FormGroup>
                 <FormGroup>
                   <Label for="positivTestDate">Datum des postiven Testes</Label>
-                  <Input type="datetime-local" name="positivTestDate" id="positivTestDate" {...input("PositivTestDate")} placeholder="Datum des postiven Coronatest" />
+                  <Input type="datetime-local" name="positivTestDate" id="positivTestDate" {...input("PositivTestDate", "date")} placeholder="Datum des postiven Coronatest" />
                 </FormGroup>
                 <FormGroup>
                   <Label for="quarantineBegin">Beginn der Quarantäne</Label>
-                  <Input type="datetime-local" name="quarantineBegin" id="quarantineBegin" {...input("QuarantineBegin")} placeholder="Beginn der Quarantäne" />
+                  <Input type="datetime-local" name="quarantineBegin" id="quarantineBegin" {...input("QuarantineBegin", "date")} placeholder="Beginn der Quarantäne" />
                 </FormGroup>
                 <FormGroup>
                   <Label for="quarantineEnd">Ende der Quarantäne</Label>
-                  <Input type="datetime-local" name="quarantineEnd" id="quarantineEnd" {...input("QuarantineEnd")} placeholder="Ende der Quarantäne" />
+                  <Input type="datetime-local" name="quarantineEnd" id="quarantineEnd" {...input("QuarantineEnd", "date")} placeholder="Ende der Quarantäne" />
                 </FormGroup>
               </Form>
             </Col>
@@ -167,8 +179,9 @@ const Next = () => {
           <Row>
             <Col sm="12">
               <Alert color="info">
-                Bitte Frage nach weiteren Personen die im selben Haushalt leben.
+                Bitte Frage nach weiteren Personen mit denen ein Kontakt bestand.
               </Alert>
+              <DependentSubjectsEditor dependentSubjects={caseData.DependentSubjects} setDependentSubjects={e => changer("DependentSubjects", e)} />
             </Col>
           </Row>
           <Row>
