@@ -28,8 +28,12 @@ const Home = () => {
                                 <td>{d.Subject.Name}</td>
                                 <td>Musterbearbeiter</td>
                                 <td>
-                                    <Button color="primary" tag="a" href={`case/${d.Id}`}>
+                                    <Button color="primary" tag="a" href={'case/${d.Id}'}>
                                         Infos
+                                    </Button>
+                                    <Button color="secondary" tag="a" href={'/import/recover/4711/2020-09-20T09:00/2020-09-20T14:00'}>
+                                 
+                                        Kontaktformulare abrufen
                                     </Button>
                                 </td>
                             </tr>
