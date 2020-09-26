@@ -84,11 +84,12 @@ namespace Pandemitrac.Server
 
             app.UseRouting();
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapFallbackToFile("./wwwroot/index.html");
+                endpoints.MapFallbackToFile("index.html");
                 endpoints.MapControllers();
                 endpoints.MapODataRoute("OData", "odata", BuildEdmModel(new ODataConventionModelBuilder()))
                     .Count().Expand().Filter().OrderBy().MaxTop(null).Select();
