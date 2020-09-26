@@ -36,7 +36,7 @@ function App() {
               <NavLink href="/import">Massenimport</NavLink>
             </NavItem>
           </Nav>
-          <NavbarText>rku.it GmbH</NavbarText>
+          <NavbarText>Gesundheits- und Veterinäramt Münster</NavbarText>
         </Collapse>
       </Navbar>
 
