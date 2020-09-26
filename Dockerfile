@@ -20,5 +20,5 @@ RUN npm run build
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/out .
-COPY --from=frontend-build ./pandemitrack.ui/build ./wwwroot
+COPY --from=frontend-build ./frontend/build ./wwwroot
 ENTRYPOINT ["dotnet", "Pandemitrac.Server.dll"]
