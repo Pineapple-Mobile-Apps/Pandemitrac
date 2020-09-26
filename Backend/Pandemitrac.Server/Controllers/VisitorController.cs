@@ -39,25 +39,6 @@ namespace Pandemitrac.Server.Controllers
             }
         }
 
-        [ODataRoute("({key})")]
-        public async Task<IActionResult> UpdateState([FromODataUri] int key, [FromBody] ODataActionParameters parameters)
-        {
-            var caseId = int.Parse(parameters["caseId"].ToString());
-            var subjectRelation = await _visitorManager.IsVisitorDependentSubject(key, caseId);
-            switch (subjectRelation)
-            {
-                case true:
-                    return BadRequest();
-                case false:
-                    var state = Enum.Parse<DependentSubjectState>(parameters["state"].ToString());
-                    await _dependentSubjectManager.UpdateDependentSubjectStateAsync(key, state);
-                    return Ok();
-                case null:
-                default:
-                    return NotFound();
-            }
-        }
-
         /// <summary>
         /// Legt einen neuen Besucher an, welcher zu einem Fall gehört
         /// </summary>
