@@ -49,6 +49,9 @@ Folgende Technologien wurden verwendet:
 - MySQL
 
 ## :iphone: Screenshots
+Screenshots findet ihr unter [HackMD](
+https://hackmd.io/OQg-EFtZTYOhD20dG99A8g?view)
+
 
 
 
