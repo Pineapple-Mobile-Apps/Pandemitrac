@@ -14,6 +14,7 @@ SimpleReactValidator.addLocale('de', {
 
 const App = (props) => {
   const [phone, setphone] = useState("");
+  const [name2, setName2] = useState("");
   const [mail, setmail] = useState("");
   const [city, setcity] = useState("");
   const [postCode, setpostCode] = useState("");
@@ -21,6 +22,8 @@ const App = (props) => {
   const [address, setAddress] = useState("");
   const [validator, setValidator] = useState(new SimpleReactValidator({ locale: 'de' }));
   const [dummy, setDummy] = useState(0);
+  const [file, setFile] = useState("");
+
   const [activeTab, setActiveTab] = useState('1');
   const [cases, setCases] = useState([]);
   const [selectoption, setselectoption] = useState('1');
@@ -76,6 +79,27 @@ const App = (props) => {
       setDummy(dummy + 1);
     }
   };
+
+  const onFormFileSubmit2 = async () => {
+    let string = "/api/Visitor/createDepending?caseid=" + selectoption;
+      let result = await fetch(string, {
+        "method": "POST",
+        "headers": {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          name: name,
+          address: "Hauptstr 47",
+          postCode: parseInt("66606"),
+          city: "Sankt Bennet",
+          phone: "0178123456",
+          mail: "coronatest@coronatest.de"
+        })
+      });
+      setName2("");
+      
+      setFile("");
+  };
   return (
     <div>
       <div>
@@ -119,8 +143,8 @@ const App = (props) => {
                   <Col md={8}>
                     <FormGroup>
                       <Label for="name">Name</Label>
-                      <Input type="text" value={name} onChange={(event) => { setName(event.currentTarget.value) }} id="lastName" placeholder="Geben sie den Nachnamen ein" />
-                      {validator.message('name', { name }, 'required|alpha_dash_space')}
+                      <Input type="text" value={name} onChange={(event) => { setName(event.currentTarget.value) }} id="lastName" placeholder="Voller Name" />
+                      {validator.message('name', { name }, 'required|alpha_space')}
                     </FormGroup>
                   </Col>
                 </Row>
@@ -128,7 +152,7 @@ const App = (props) => {
                   <Col md={8}>
                     <FormGroup>
                       <Label for="address">Straße</Label>
-                      <Input type="text" value={address} onChange={e => setAddress(e.currentTarget.value)} id="address" placeholder="Geben sie die Adresse ein" />
+                      <Input type="text" value={address} onChange={e => setAddress(e.currentTarget.value)} id="address" placeholder="Adresse" />
                       {validator.message('address', { address }, 'required')}
 
                     </FormGroup>
@@ -138,14 +162,14 @@ const App = (props) => {
                   <Col md={2}>
                     <FormGroup>
                       <Label for="postCode">PLZ</Label>
-                      <Input type="text" value={postCode} onChange={e => setpostCode(e.currentTarget.value)} id="postCode" placeholder="Geben sie die PLZ ein" />
+                      <Input type="text" value={postCode} onChange={e => setpostCode(e.currentTarget.value)} id="postCode" placeholder="PLZ" />
                       {validator.message('postCode', postCode, 'required|numeric|min:5|max:5', { className: 'text-danger' })}
                     </FormGroup>
                   </Col>
                   <Col md={6}>
                     <FormGroup>
                       <Label for="city">Stadt</Label>
-                      <Input type="text" value={city} onChange={e => setcity(e.currentTarget.value)} id="city" placeholder="Geben sie den Ort ein" />
+                      <Input type="text" value={city} onChange={e => setcity(e.currentTarget.value)} id="city" placeholder="Stadt" />
                       {validator.message('city', city, 'required|alpha_dash_space', { className: 'text-danger' })}
                     </FormGroup>
                   </Col>
@@ -153,8 +177,8 @@ const App = (props) => {
                 <Row>
                   <Col md={8}>
                     <FormGroup>
-                      <Label for="phone">Handynummer</Label>
-                      <Input type="text" value={phone} onChange={e => setphone(e.currentTarget.value)} id="phone" placeholder="Geben sie die Handynummer ein" />
+                      <Label for="phone">Telefonnummer</Label>
+                      <Input type="text" value={phone} onChange={e => setphone(e.currentTarget.value)} id="phone" placeholder="Telefonnummer" />
                       {validator.message('phone', phone, 'required|phone', { className: 'text-danger' })}
                     </FormGroup>
                   </Col>
@@ -162,8 +186,8 @@ const App = (props) => {
                 <Row>
                   <Col md={8}>
                     <FormGroup>
-                      <Label for="mail">E-Mailadresse</Label>
-                      <Input type="text" value={mail} onChange={e => setmail(e.currentTarget.value)} id="mail" placeholder="Geben sie die E-Mailadresse ein" />
+                      <Label for="mail">E-Mail</Label>
+                      <Input type="text" value={mail} onChange={e => setmail(e.currentTarget.value)} id="mail" placeholder="E-Mail" />
                       {validator.message('mail', mail, 'required|email', { className: 'text-danger' })}
 
                     </FormGroup>
@@ -174,12 +198,20 @@ const App = (props) => {
             </Container>
           </TabPane>
           <TabPane tabId="2">
-            <Row>
-              <Col sm="6">
-              </Col>
-              <Col sm="6">
-              </Col>
-            </Row>
+            <Form>
+              <Row form>
+                <Col md={8}>
+                  <FormGroup>
+                    <Label for="name">Name</Label>
+                    <Input type="text" value={name2} onChange={(event) => { setName2(event.currentTarget.value) }} id="lastName" placeholder="Voller Name" />
+                    {validator.message('name2', { name2 }, 'required|alpha_space')}
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row><Col> <Label for="exampleFile">Dateo</Label>
+                <Input type="file" value={file} onChange={(event) => { setFile(event.currentTarget.value) }} id="exampleFile" /></Col></Row>
+              <Button onClick={onFormFileSubmit2}>Daten abschicken</Button>
+            </Form >
           </TabPane>
         </TabContent>
       </div>
