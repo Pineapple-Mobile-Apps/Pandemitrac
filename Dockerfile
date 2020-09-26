@@ -10,7 +10,7 @@ COPY ./Backend/Pandemitrac.Server ./
 RUN dotnet publish -c Release -o out
 
 # Build Frontend
-FROM node:13.0.1-stretch AS frontend-build
+FROM node:12-stretch AS frontend-build
 WORKDIR /frontend
 COPY ./pandemitrack.ui .
 RUN npm install
