@@ -7,6 +7,8 @@ import useFetch from './useFetch';
 const Home = () => {
     const casesRequest = useFetch("/odata/cases?$expand=Subject", undefined, []);
 
+    const cases = casesRequest?.data?.value;
+
     return (
         <LoadingGuard isLoading={casesRequest.isLoading} error={casesRequest.error}>
             <Container>
@@ -21,7 +23,7 @@ const Home = () => {
                     </thead>
                     <tbody>
                         {
-                            casesRequest?.data?.map(d => <tr>
+                            cases?.map(d => <tr>
                                 <td>{d.Id}</td>
                                 <td>{d.Subject.Name}</td>
                                 <td>Musterbearbeiter</td>

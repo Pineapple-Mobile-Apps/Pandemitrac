@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import { Button, Form, FormGroup, Label, Input, FormText, Container, Nav, NavLink, NavItem, TabContent, TabPane, Row, Col, Alert } from 'reactstrap';
+import VisitsEditor from './VisitsEditor';
 let Next = () => {
   //Verwaltung der Tabs deren Status
   const [activeTab, setActiveTab] = useState("person");
@@ -55,6 +56,7 @@ let Next = () => {
   const [locationPostCode, setLocationPostCode] = useState("");
   const [locationCity, setLocationCity] = useState("");
 
+  const [visits, setVisits] = useState([]);
 
   const submit = async () => {
     let result = await fetch("/odata/visitors", {
@@ -64,7 +66,7 @@ let Next = () => {
       },
       body: JSON.stringify({
         Name: name,
-        Adress: street + " " + housenumber || "",
+        Address: street + " " + housenumber || "",
         PostCode: parseInt(postcode) || 0,
         City: city || "",
         Phone: tel || null,
@@ -201,41 +203,7 @@ let Next = () => {
           </Row>
           <Row>
             <Col sm="12">
-              <Form>
-                <FormGroup>
-                  <Label for="locationName">Name des Ortes / der Veranstaltung</Label>
-                  <Input type="text" name="locationName" id="locationName" value={locationName} onChange={e => setLocationName(e.currentTarget.value)} placeholder="Name des Ortes" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="locationContactPerson">Kontaktperson</Label>
-                  <Input type="text" name="locationContactPerson" id="locationContactPerson" value={locationContactPerson} onChange={e => setLocationContactPerson(e.currentTarget.value)} placeholder="(optional) Ansprechpartner Vorort" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="locationPhone">Telefonnummer</Label>
-                  <Input type="text" name="locationPhone" id="locationPhone" value={locationPhone} onChange={e => setLocationPhone(e.currentTarget.value)} placeholder="(optional) Telefonnummer" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="locationAdress">Straße</Label>
-                  <Input type="text" name="locationAdress" id="locationAdress" value={locationAdress} onChange={e => setLocationAdress(e.currentTarget.value)} placeholder="Adresse des Ortes / der Veranstaltung" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="locationPostCode">Postleitzahl</Label>
-                  <Input type="text" name="locationPostCode" id="locationPostCode" value={locationPostCode} onChange={e => setLocationPostCode(e.currentTarget.value)} placeholder="Postleitzahl" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="locationCity">Stadt</Label>
-                  <Input type="text" name="locationCity" id="locationCity" value={locationCity} onChange={e => setLocationCity(e.currentTarget.value)} placeholder="Stadt" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="visitBegin">Beginn des Besuch</Label>
-                  <Input type="datetime-local" name="visitBegin" id="visitBegin" value={visitBegin} onChange={e => setVisitBegin(e.currentTarget.value)} placeholder="Beginn des Besuch" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="visitEnd">Ende des Besuch</Label>
-                  <Input type="datetime-local" name="visitEnd" id="visitEnd" value={visitEnd} onChange={e => setVisitEnd(e.currentTarget.value)} placeholder="Ende des Besuch" />
-                </FormGroup>
-
-              </Form>
+              <VisitsEditor visits={visits} setVisits={setVisits} />
             </Col>
           </Row>
           <Row>

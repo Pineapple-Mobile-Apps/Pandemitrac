@@ -12,8 +12,6 @@ export default function CaseDetails() {
 
     const { data } = caseRequest;
 
-    console.log("Data", data);
-
     return <LoadingGuard isLoading={caseRequest.isLoading} error={caseRequest.error}>
         <Container>
             <Card>
