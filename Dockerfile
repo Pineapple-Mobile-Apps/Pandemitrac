@@ -10,7 +10,7 @@ COPY ./Backend/Pandemitrac.Server ./
 RUN dotnet publish -c Release -o out
 
 # Build Frontend
-FROM node:13.0.1-stretch AS frontend-build
+FROM node:12-stretch AS frontend-build
 WORKDIR /frontend
 COPY ./pandemitrack.ui .
 RUN npm install
@@ -20,5 +20,5 @@ RUN npm run build
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/out .
-COPY --from=frontend-build ./pandemitrack.ui ./wwwroot
+COPY --from=frontend-build ./pandemitrack.ui/build ./wwwroot
 ENTRYPOINT ["dotnet", "Pandemitrac.Server.dll"]
