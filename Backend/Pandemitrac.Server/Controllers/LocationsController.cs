@@ -9,11 +9,11 @@ using Pandemitrac.Server.Models.Input;
 namespace Pandemitrac.Server.Controllers
 {
     [ODataRoutePrefix("locations")]
-    public class LocationController : ODataBaseController<Location>
+    public class LocationsController : ODataBaseController<Location>
     {
         private IEqualityComparer<Location> LocationComparer { get; }
 
-        public LocationController(DatabaseContext databaseContext, IEqualityComparer<Location> locationComparer) : base(databaseContext)
+        public LocationsController(DatabaseContext databaseContext, IEqualityComparer<Location> locationComparer) : base(databaseContext)
         {
             LocationComparer = locationComparer;
         }
@@ -22,7 +22,7 @@ namespace Pandemitrac.Server.Controllers
         [HttpPost]
         public override async Task<IActionResult> Create(Location location)
         {
-            var existingLocation = await Task.Run(() => GetEntitySet().FirstOrDefault(l => LocationComparer.Equals(l, location)));
+            var existingLocation = await Task.Run<Location>(() => GetEntitySet().FirstOrDefault(l => LocationComparer.Equals(l, location)));
             if (existingLocation != default(Location))
                 return StatusCode(208, existingLocation);
             return await base.Create(location);
