@@ -32,7 +32,7 @@ namespace Pandemitrac.Server.Controllers
         }
 
         [HttpPost("/api/case/updateDependentSubjectStatus")]
-        public async Task<IActionResult> UpdateDependentSubjectStatus([FromQuery] int caseId, [FromQuery] int subjectId, [FromQuery] string state)
+        public async Task<IActionResult> UpdateDependentSubjectStatus([FromQuery] int caseId, [FromQuery] int subjectId, [FromQuery] string state, [FromQuery] string comment)
         {
             var @case = await FindEntityAsync(caseId);
             if (@case == null)
@@ -42,6 +42,7 @@ namespace Pandemitrac.Server.Controllers
                 return NotFound();
             var stateWrapper = await DependentSubjectManager.CreateStateWrapper(subject);
             var parsedState = Enum.Parse<DependentSubjectState>(state);
+            stateWrapper.Comment = comment;
             await stateWrapper.Set(parsedState);
             return Updated(subject);
         }

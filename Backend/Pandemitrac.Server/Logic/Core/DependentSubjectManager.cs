@@ -39,11 +39,12 @@ namespace Pandemitrac.Server.Logic.Core
         /// </summary>
         /// <param name="dependentSubjectId">ID des <see cref="DependentSubject"/>.</param>
         /// <param name="newState">Neuer Status.</param>
+        /// <param name="comment">Kommentar zur Statusänderung (optional).</param>
         /// <returns>Informationen zum asynchronen Vorgang.</returns>
-        public async Task UpdateDependentSubjectStateAsync(int dependentSubjectId, DependentSubjectState newState)
+        public async Task UpdateDependentSubjectStateAsync(int dependentSubjectId, DependentSubjectState newState, string comment = "")
         {
             var stateEntries = DatabaseContext.ChangeDependentSubjectStateEntries;
-            var entry = CreateState(dependentSubjectId, newState);
+            var entry = CreateState(dependentSubjectId, newState, comment);
             await stateEntries.AddAsync(entry);
             await DatabaseContext.SaveChangesAsync();
         }
@@ -63,13 +64,15 @@ namespace Pandemitrac.Server.Logic.Core
         /// Fabrikmethode zum Erzeugen einer <see cref="ChangeDependentSubjectStateEntry"/>-Instanz.
         /// </summary>
         /// <param name="dependentSubjectId">ID des <see cref="DependentSubject"/>s, dem der Eintrag zugeordnet werden soll.</param>
-        /// <param name="state">Initialer Status des Änderungseintrags (optional).</param>
+        /// <param name="state">Initialer Status des Änderungseintrags.</param>
+        /// <param name="comment">Kommentar zum Änderungseintrag (optional).</param>
         /// <returns>Erzeugte <see cref="ChangeDependentSubjectStateEntry"/>-Instanz.</returns>
-        protected virtual ChangeDependentSubjectStateEntry CreateState(int dependentSubjectId, DependentSubjectState state) => new ChangeDependentSubjectStateEntry()
+        protected virtual ChangeDependentSubjectStateEntry CreateState(int dependentSubjectId, DependentSubjectState state, string comment = "") => new ChangeDependentSubjectStateEntry()
         {
             DependentSubjectId = dependentSubjectId,
             CurrentState = state,
-            DateTime = DateTime.Now
+            DateTime = DateTime.Now,
+            Comment = comment
         };
     }
 }
