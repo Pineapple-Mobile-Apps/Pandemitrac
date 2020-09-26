@@ -119,6 +119,9 @@ namespace Pandemitrac.Server
             builder.EntitySet<Editor>("editors");
             builder.EntitySet<Location>("locations");
             builder.EntitySet<Visitor>("visitors");
+            var caseTypeBuilder = builder.EntityType<Case>();
+            var caseTypeGetStatusFunction = caseTypeBuilder.Function("status").Returns<ChangeDependentSubjectStateEntry>();
+            caseTypeGetStatusFunction.Parameter<int>("subjectId").Required();
             return builder.GetEdmModel();
         }
     }
