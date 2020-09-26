@@ -5,6 +5,7 @@ import Launch from './Launch';
 import Home from './Home';
 import Creation from './Creation';
 import Import from './Import';
+import Infection from './Infection'
 
 import {
   BrowserRouter as Router, Switch,
@@ -35,6 +36,9 @@ function App() {
             <NavItem>
               <NavLink href="/import">Massenimport</NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink href="/infection">Infektionsgraph</NavLink>
+            </NavItem>
           </Nav>
           <NavbarText>Gesundheits- und Veterinäramt Münster</NavbarText>
         </Collapse>
@@ -58,6 +62,9 @@ function App() {
         </Route>
         <Route path="/home">
           <Home />
+        </Route>
+        <Route path="/infection">
+          <Infection />
         </Route>
         <Route path="/case" exact >
           <Creation />
