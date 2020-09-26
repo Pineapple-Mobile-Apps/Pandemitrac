@@ -41,13 +41,22 @@ namespace Pandemitrac.Server.Logic.Core
         /// <param name="newState">Neuer Status.</param>
         /// <returns>Informationen zum asynchronen Vorgang.</returns>
         public async Task UpdateDependentSubjectStateAsync(DependentSubject dependentSubject, DependentSubjectState newState)
-            {
+        {
             var stateEntries = DatabaseContext.ChangeDependentSubjectStateEntries;
             var entry = CreateState(dependentSubject.Id, newState);
             await stateEntries.AddAsync(entry);
-                await DatabaseContext.SaveChangesAsync();
-            }
+            await DatabaseContext.SaveChangesAsync();
+        }
 
+        /// <summary>
+        /// Erzeugt eine <see cref="DependentSubjectStateWrapper"/>-Instanz für einen <see cref="DependentSubject"/>.
+        /// </summary>
+        /// <param name="dependentSubject"><see cref="DependentSubject"/>-Instanz, für der Wrapper erzeugt wird.</param>
+        /// <returns>Erzeugter Wrapper.</returns>
+        public async Task<DependentSubjectStateWrapper> CreateStateWrapper(DependentSubject dependentSubject)
+        {
+            var initialState = (await GetDependentSubjectStateAsync(dependentSubject)).CurrentState;
+            return new DependentSubjectStateWrapper(dependentSubject, initialState, this);
         }
 
         /// <summary>
