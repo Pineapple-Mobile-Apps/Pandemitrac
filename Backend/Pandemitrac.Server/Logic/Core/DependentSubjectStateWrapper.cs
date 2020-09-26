@@ -12,6 +12,7 @@ namespace Pandemitrac.Server.Logic.Core
 
         public DependentSubjectStateWrapper(DependentSubject dependentSubject, DependentSubjectState initialState, DependentSubjectManager dependentSubjectManager)
         {
+            DependentSubject = dependentSubject;
             DependentSubjectManager = dependentSubjectManager;
             currentState = CreateInitialState(initialState);
         }
