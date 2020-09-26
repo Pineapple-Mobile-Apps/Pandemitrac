@@ -24,7 +24,7 @@ namespace Pandemitrac.Server.Controllers
         {
             var existingLocation = await Task.Run(() => GetEntitySet().FirstOrDefault(l => LocationComparer.Equals(l, location)));
             if (existingLocation != default(Location))
-                return Ok(existingLocation);
+                return StatusCode(208, existingLocation);
             return await base.Create(location);
         }
     }
