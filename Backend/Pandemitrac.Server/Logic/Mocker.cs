@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Pandemitrac.Server.Models;
 using Pandemitrac.Server.Models.Core;
 using Pandemitrac.Server.Models.Input;
@@ -18,7 +19,8 @@ namespace Pandemitrac.Server.Logic
 
         public void Mock()
         {
-            var visitor = new Visitor
+            var visitors = new List<Visitor>{
+                new Visitor
             {
                 Name = "Tim Ittermann",
                 Address = "Musterstr. 123",
@@ -26,10 +28,7 @@ namespace Pandemitrac.Server.Logic
                 Mail = "tim.ittermann@rku-it.de",
                 Phone = "+49151123456",
                 PostCode = 44652
-            };
-
-            _db.Visitors.Add(visitor);
-            _db.Visitors.AddRange(new Visitor
+            }, new Visitor
             {
                 Name = "Sven Treutler"
             }, new Visitor
@@ -43,7 +42,9 @@ namespace Pandemitrac.Server.Logic
             new Visitor
             {
                 Name = "Rudi Schefer"
-            });
+            }};
+
+            _db.Visitors.AddRange(visitors);
             _db.SaveChanges();
 
             var editor = new Editor
@@ -55,9 +56,34 @@ namespace Pandemitrac.Server.Logic
 
             var @case = new Case
             {
-                SubjectId = visitor.Id,
+                SubjectId = visitors[0].Id,
                 Created = DateTime.Now,
-                EditorId = editor.Id
+                EditorId = editor.Id,
+                DependentSubjects = new List<DependentSubject>{
+                    new DependentSubject{
+                        History = new List<ChangeDependentSubjectStateEntry>{
+                            new ChangeDependentSubjectStateEntry{
+                                CurrentState = DependentSubjectState.Pending,
+                                DateTime = DateTime.Now
+                            },
+                            new ChangeDependentSubjectStateEntry{
+                                CurrentState = DependentSubjectState.TestPending,
+                                DateTime = DateTime.Now,
+                                EditorId = editor.Id
+                            }
+                        },
+                        VisitorId = visitors[1].Id
+                    },
+                    new DependentSubject{
+                        History = new List<ChangeDependentSubjectStateEntry>{
+                            new ChangeDependentSubjectStateEntry{
+                                CurrentState = DependentSubjectState.Pending,
+                                DateTime = DateTime.Now
+                            }
+                        },
+                        VisitorId = visitors[2].Id
+                    }
+                }
             };
             _db.Cases.AddRange(@case, new Case
             {

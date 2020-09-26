@@ -25,8 +25,7 @@ namespace Pandemitrac.Server.Models.Core
         /// <summary>
         /// Bearbeiter
         /// </summary>
-        [Required]
-        public int EditorId { get; set; }
+        public int? EditorId { get; set; }
 
         /// <summary>
         /// Bearbeiter
