@@ -30,6 +30,7 @@ namespace Pandemitrac.Server.Logic.Core
                 orderby stateEntry.DateTime descending
                 select stateEntry;
             if ((await subjectStateHistory.CountAsync()) == 0)
+                await UpdateDependentSubjectStateAsync(dependentSubject, DependentSubjectState.Pending);
             return subjectStateHistory.First();
         }
 
