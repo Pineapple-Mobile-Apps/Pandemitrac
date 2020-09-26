@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Mvc;
+using Pandemitrac.Server.Logic.Core;
 using Pandemitrac.Server.Logic.Input;
 using Pandemitrac.Server.Models;
+using Pandemitrac.Server.Models.Core;
 using Pandemitrac.Server.Models.Input;
 
 namespace Pandemitrac.Server.Controllers
@@ -32,6 +36,25 @@ namespace Pandemitrac.Server.Controllers
             else
             {
                 return StatusCode(208, visitor);
+            }
+        }
+
+        [ODataRoute("({key})")]
+        public async Task<IActionResult> UpdateState([FromODataUri] int key, [FromBody] ODataActionParameters parameters)
+        {
+            var caseId = int.Parse(parameters["caseId"].ToString());
+            var subjectRelation = await _visitorManager.IsVisitorDependentSubject(key, caseId);
+            switch (subjectRelation)
+            {
+                case true:
+                    return BadRequest();
+                case false:
+                    var state = Enum.Parse<DependentSubjectState>(parameters["state"].ToString());
+                    await _dependentSubjectManager.UpdateDependentSubjectStateAsync(key, state);
+                    return Ok();
+                case null:
+                default:
+                    return NotFound();
             }
         }
 
