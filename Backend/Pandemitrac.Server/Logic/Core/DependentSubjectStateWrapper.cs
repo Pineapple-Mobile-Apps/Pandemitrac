@@ -110,7 +110,7 @@ namespace Pandemitrac.Server.Logic.Core
         {
             public override async Task<SubjectState> SetNotAvailable()
             {
-                await DependentSubjectManager.UpdateDependentSubjectStateAsync(DependentSubject, DependentSubjectState.NotAvailable);
+                await DependentSubjectManager.UpdateDependentSubjectStateAsync(DependentSubject.Id, DependentSubjectState.NotAvailable);
                 return new NotAvailableState()
                 {
                     DependentSubject = DependentSubject,
@@ -123,7 +123,7 @@ namespace Pandemitrac.Server.Logic.Core
         {
             public override async Task<SubjectState> SetTestPending()
             {
-                await DependentSubjectManager.UpdateDependentSubjectStateAsync(DependentSubject, DependentSubjectState.TestPending);
+                await DependentSubjectManager.UpdateDependentSubjectStateAsync(DependentSubject.Id, DependentSubjectState.TestPending);
                 return new TestPendingState()
                 {
                     DependentSubject = DependentSubject,
@@ -136,7 +136,7 @@ namespace Pandemitrac.Server.Logic.Core
         {
             public override async Task<SubjectState> SetTesting()
             {
-                await DependentSubjectManager.UpdateDependentSubjectStateAsync(DependentSubject, DependentSubjectState.Testing);
+                await DependentSubjectManager.UpdateDependentSubjectStateAsync(DependentSubject.Id, DependentSubjectState.Testing);
                 return new TestingState()
                 {
                     DependentSubject = DependentSubject,
@@ -149,7 +149,7 @@ namespace Pandemitrac.Server.Logic.Core
         {
             public override async Task<SubjectState> SetPositive()
             {
-                await DependentSubjectManager.UpdateDependentSubjectStateAsync(DependentSubject, DependentSubjectState.Positiv);
+                await DependentSubjectManager.UpdateDependentSubjectStateAsync(DependentSubject.Id, DependentSubjectState.Positiv);
                 // TODO: Fall anlegen
                 return new PositiveState()
                 {
@@ -160,7 +160,7 @@ namespace Pandemitrac.Server.Logic.Core
 
             public override async Task<SubjectState> SetNegative()
             {
-                await DependentSubjectManager.UpdateDependentSubjectStateAsync(DependentSubject, DependentSubjectState.Negativ);
+                await DependentSubjectManager.UpdateDependentSubjectStateAsync(DependentSubject.Id, DependentSubjectState.Negativ);
                 return new NegativeState()
                 {
                     DependentSubject = DependentSubject,

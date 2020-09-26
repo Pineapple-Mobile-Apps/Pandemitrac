@@ -19,31 +19,31 @@ namespace Pandemitrac.Server.Logic.Core
         /// <summary>
         /// Ruft den aktuellen Status eines <see cref="DependentSubject"/>s ab.
         /// </summary>
-        /// <param name="dependentSubject">Verweis auf den <see cref="DependentSubject"/></param>
+        /// <param name="dependentSubjectId">ID des <see cref="DependentSubject"/></param>
         /// <returns>Ein <see cref="ChangeDependentSubjectStateEntry"/>, welcher den neusten Status repräsentiert."</returns>
-        public async Task<ChangeDependentSubjectStateEntry> GetDependentSubjectStateAsync(DependentSubject dependentSubject)
+        public async Task<ChangeDependentSubjectStateEntry> GetDependentSubjectStateAsync(int dependentSubjectId)
         {
             var stateEntries = DatabaseContext.ChangeDependentSubjectStateEntries;
             var subjectStateHistory =
                 from stateEntry in stateEntries
-                where stateEntry.DependentSubjectId == dependentSubject.Id
+                where stateEntry.DependentSubjectId == dependentSubjectId
                 orderby stateEntry.DateTime descending
                 select stateEntry;
             if ((await subjectStateHistory.CountAsync()) == 0)
-                await UpdateDependentSubjectStateAsync(dependentSubject, DependentSubjectState.Pending);
+                await UpdateDependentSubjectStateAsync(dependentSubjectId, DependentSubjectState.Pending);
             return subjectStateHistory.First();
         }
 
         /// <summary>
         /// Ändert den aktuellen Status eines <see cref="DependentSubject"/>s.
         /// </summary>
-        /// <param name="dependentSubject">Verweis auf den <see cref="DependentSubject"/>.</param>
+        /// <param name="dependentSubjectId">ID des <see cref="DependentSubject"/>.</param>
         /// <param name="newState">Neuer Status.</param>
         /// <returns>Informationen zum asynchronen Vorgang.</returns>
-        public async Task UpdateDependentSubjectStateAsync(DependentSubject dependentSubject, DependentSubjectState newState)
+        public async Task UpdateDependentSubjectStateAsync(int dependentSubjectId, DependentSubjectState newState)
         {
             var stateEntries = DatabaseContext.ChangeDependentSubjectStateEntries;
-            var entry = CreateState(dependentSubject.Id, newState);
+            var entry = CreateState(dependentSubjectId, newState);
             await stateEntries.AddAsync(entry);
             await DatabaseContext.SaveChangesAsync();
         }
@@ -55,7 +55,7 @@ namespace Pandemitrac.Server.Logic.Core
         /// <returns>Erzeugter Wrapper.</returns>
         public async Task<DependentSubjectStateWrapper> CreateStateWrapper(DependentSubject dependentSubject)
         {
-            var initialState = (await GetDependentSubjectStateAsync(dependentSubject)).CurrentState;
+            var initialState = (await GetDependentSubjectStateAsync(dependentSubject.Id)).CurrentState;
             return new DependentSubjectStateWrapper(dependentSubject, initialState, this);
         }
 
