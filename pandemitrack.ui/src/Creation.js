@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { Button, Form, FormGroup, Label, Input, FormText, Container, Nav, NavLink, NavItem, TabContent, TabPane, Row, Col, Alert } from 'reactstrap';
 import VisitsEditor from './VisitsEditor';
 import { createChanger, createInput } from './utils/StateValueTools';
 import DependentSubjectsEditor from './DependentSubjectEditor';
+import { useParams } from 'react-router';
+import getCaseData from './utils/CaseDataRepository';
+import Loading from './Loading';
 
 const Next = () => {
+
+  const { id } = useParams();
 
   const [saveState, setSaveState] = useState(); // None, Saving, Error 
 
@@ -16,23 +21,15 @@ const Next = () => {
   }
 
   //Nutzung des verschachtelten Objektes
-  const [caseData, setCaseData] = useState({
-    Created: new Date(),
-    TestDate: new Date(),
-    PositivTestDate: null,
-    QuarantineBegin: null,
-    QuarantineEnd: null,
-    Subject: {
-      Name: "",
-      Phone: "",
-      Mail: "",
-      Address: "",
-      PostCode: 0,
-      City: ""
-    },
-    Visits: [],
-    DependentSubjects: []
-  });
+  const [caseData, setCaseData] = useState(null);
+  const [isNew, setIsNew] = useState(false);
+
+  useEffect(async () => {
+    const [caseResponse, isNew] = await getCaseData(id);
+    console.log("Got Data", caseResponse);
+    setCaseData(caseResponse);
+    setIsNew(isNew);
+  }, [id]);
 
   const input = createInput(caseData, setCaseData);
   const changer = createChanger(caseData, setCaseData);
@@ -60,6 +57,10 @@ const Next = () => {
     return <Alert color="primary">
       Speichere Daten bitte waren...
     </Alert>;
+  }
+
+  if (caseData === null) {
+    return <Loading />
   }
 
   return (
@@ -92,12 +93,12 @@ const Next = () => {
             Abhängige Personen
           </NavLink>
         </NavItem>
-        <NavItem>
+        {isNew && <NavItem>
           <NavLink onClick={() => { toggle('validate'); }}
             className={classnames({ active: activeTab === 'validate' })} >
             Validierung und Absenden
           </NavLink>
-        </NavItem>
+        </NavItem>}
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="person">
@@ -111,7 +112,7 @@ const Next = () => {
           </Row>
           <Row>
             <Col sm="12">
-              <VisitorEditor visitor={caseData.Subject} setVisitor={e => changer("Subject", e)} />
+              <VisitorEditor visitor={caseData.Subject} setVisitor={e => changer("Subject", e)} disabled={!isNew} />
             </Col>
           </Row>
           <Row>
@@ -222,34 +223,34 @@ export default Next
 
 function VisitorEditor(props) {
 
-  const { visitor, setVisitor } = props;
+  const { visitor, setVisitor, disabled } = props;
 
   const input = createInput(visitor, setVisitor);
 
   return <Form>
     <FormGroup>
       <Label for="name">Name</Label>
-      <Input type="text" id="name" {...input("Name")} placeholder="Voller Name" />
+      <Input type="text" id="name" {...input("Name")} placeholder="Voller Name" disabled={disabled} />
     </FormGroup>
     <FormGroup>
       <Label for="street">Straße und Hausnummer</Label>
-      <Input type="text" name="street" id="street" placeholder="Strasse" {...input("Address")} />
+      <Input type="text" disabled={disabled} name="street" id="street" placeholder="Strasse" {...input("Address")} />
     </FormGroup>
     <FormGroup>
       <Label for="postcode">Postleitzahl</Label>
-      <Input type="number" name="postcode" id="postcode" {...input("PostCode")} placeholder="Postleitzahl" />
+      <Input type="number" disabled={disabled} name="postcode" id="postcode" {...input("PostCode")} placeholder="Postleitzahl" />
     </FormGroup>
     <FormGroup>
       <Label for="city">Stadt</Label>
-      <Input type="text" name="city" id="city" {...input("City")} placeholder="Stadt" />
+      <Input type="text" disabled={disabled} name="city" id="city" {...input("City")} placeholder="Stadt" />
     </FormGroup>
     <FormGroup>
       <Label for="tel">Telefonnummer</Label>
-      <Input type="tel" name="tel" id="tel" {...input("Phone")} placeholder="Telefonnummer" />
+      <Input type="tel" disabled={disabled} name="tel" id="tel" {...input("Phone")} placeholder="Telefonnummer" />
     </FormGroup>
     <FormGroup>
       <Label for="mail">E-Mail</Label>
-      <Input type="mail" name="mail" id="mail" {...input("Mail")} placeholder="Mail-Adresse" />
+      <Input type="mail" disabled={disabled} name="mail" id="mail" {...input("Mail")} placeholder="Mail-Adresse" />
     </FormGroup>
   </Form>;
 }

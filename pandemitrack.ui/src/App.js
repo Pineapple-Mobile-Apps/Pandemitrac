@@ -21,47 +21,45 @@ function App() {
   const toggle = () => setIsOpen(!isOpen);
   return (
     <Router >
-        <Navbar color="light" light expand="md">
-          <NavbarBrand href="/launch" >Kontaktverfolgung</NavbarBrand>
-          <NavbarToggler onClick={toggle} />
-          <Collapse isOpen={isOpen} navbar>
-            <Nav className="mr-auto" navbar>            <NavItem>
-              <NavLink href="/home">Übersicht</NavLink>
+      <Navbar color="light" light expand="md">
+        <NavbarBrand href="/launch" >Kontaktverfolgung</NavbarBrand>
+        <NavbarToggler onClick={toggle} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="mr-auto" navbar>            <NavItem>
+            <NavLink href="/home">Übersicht</NavLink>
+          </NavItem>
+            <NavItem>
+              <NavLink href="/case/new">Erfassung</NavLink>
             </NavItem>
-              <NavItem>
-                <NavLink href="/case">Erfassung</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/import">Massenimport</NavLink>
-              </NavItem>
-            </Nav>
-            <NavbarText>rku.it GmbH</NavbarText>
-          </Collapse>
-        </Navbar>
+            <NavItem>
+              <NavLink href="/import">Massenimport</NavLink>
+            </NavItem>
+          </Nav>
+          <NavbarText>rku.it GmbH</NavbarText>
+        </Collapse>
+      </Navbar>
 
-        <div className="mt-3">
-          <Switch>
-            <Route path="/case/:id" exact>
-              <CaseDetails />
-            </Route>
-            <Route path="/launch">
-              <Launch />
-            </Route>
-            <Route path="/home">
-              <Home />
-            </Route>
-            <Route path="/case" exact >
-              <Creation />
-            </Route>
-            <Route path="/import" exact>
-              <Import />
-            </Route>
-            <Route path="/import/recover" exact>
-              <Recover />
-            </Route>
-          </Switch>
-        </div>
+      <div className="mt-3">
+        <Switch>
+          <Route path="/launch">
+            <Launch />
+          </Route>
+          <Route path="/home">
+            <Home />
+          </Route>
+          <Route path="/case/:id" exact >
+            <Creation />
+          </Route>
+          <Route path="/import" exact>
+            <Import />
+          </Route>
+          <Route path="/import/recover" exact>
+            <Recover />
+          </Route>
+        </Switch>
+      </div>
     </Router >
+
   );
 }
 

@@ -1,23 +1,23 @@
 export function getAvailableStates(currentState) {
     switch (currentState) {
         case "Pending":
-            return [ "NotAvailable", "TestPending" ];
+            return ["NotAvailable", "TestPending"];
         case "NotAvailable":
-            return [ "Testing" ];
+            return ["Testing"];
         case "TestPending":
-            return [ "Testing" ];
+            return ["Testing"];
         case "Testing":
-            return [ "Positiv", "Negativ" ];
+            return ["Positiv", "Negativ"];
         case "Positiv":
-            return [  ];
         case "Negativ":
-            return [  ];
+        case "Unknown":
+            return [];
         default:
             throw new Error("Unknown State");
     }
 }
 
-export function stringifyState(state) {
+export function stringifyState(currentState) {
     switch (currentState) {
         case "Pending":
             return "Kontakt ausstehend";
@@ -31,7 +31,21 @@ export function stringifyState(state) {
             return "Test positiv";
         case "Negativ":
             return "Test negativ";
+        case "Unknown":
+            return "Unbekannt";
         default:
             throw new Error("Unknown State");
+    }
+}
+
+export async function fetchState(caseId, entryId) {
+    // /odata/cases(1)/status(subjectId=1)
+    const result = await fetch(`/odata/cases(${caseId})/status(subjectId=${entryId})`);
+    if (result.status === 200) {
+        const json = await result.json();
+        return json.CurrentState;
+    }
+    else {
+        return "Unknown";
     }
 }

@@ -1,6 +1,7 @@
 import { CardHeader, CardTitle, Table } from "reactstrap";
 import { createArrayChanger } from "./utils/StateValueTools";
 import React from 'react';
+import { stringifyState } from "./utils/StatusTools";
 
 export default function DependentSubjectsEditor(props) {
 
@@ -26,6 +27,6 @@ function DependentSubjectEditor(props) {
 
     return <tr>
         <th scope="row">{dependentSubject.Visitor.Name}</th>
-        <td>TBD</td>
+        <td>{stringifyState(dependentSubject.CurrentState)}</td>
     </tr>;
 }
