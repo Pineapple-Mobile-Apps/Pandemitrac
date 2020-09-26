@@ -104,6 +104,31 @@ namespace Pandemitrac.Server.Logic.Input
 
             await _db.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Bestimmt, in welcher Relation ein <see cref="Visitor"/> zu einem <see cref="Case"/> steht.
+        /// </summary>
+        /// <param name="visitorId"><see cref="Visitor"/>-ID.</param>
+        /// <param name="caseId"><see cref="Case"/>-ID.</param>
+        /// <returns><code>true</code>, wenn der Besucher direkt betroffen ist, <code>false</code>, wenn der Besucher indirekt betroffen ist,
+        /// <code>null</code>, wenn der Besucher nicht betroffen ist.</returns>
+        public async Task<bool?> IsVisitorDependentSubject(int visitorId, int caseId)
+        {
+            var @case = await _db.Cases.FindAsync(caseId);
+            var visitor = await _db.Visitors.FindAsync(visitorId);
+            if (@case == null || visitor == null)
+                return null;
+            var caseDependentSubjectIds =
+                from subject in @case.DependentSubjects
+                where subject.VisitorId == visitorId
+                select subject.VisitorId;
+            if (caseDependentSubjectIds.Count() > 0)
+                return true;
+            else if (@case.SubjectId == visitorId)
+                return false;
+            else
+                return null;
+        }
     }
 
 }
