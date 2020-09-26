@@ -12,10 +12,12 @@ namespace Pandemitrac.Server.Controllers
     public class VisitorController : ODataBaseController<Visitor>
     {
         private readonly VisitorManager _visitorManager;
+        private readonly DependentSubjectManager _dependentSubjectManager;
 
-        public VisitorController(DatabaseContext db, VisitorManager visitorManager) : base(db)
+        public VisitorController(DatabaseContext db, VisitorManager visitorManager, DependentSubjectManager dependentSubjectManager) : base(db)
         {
             _visitorManager = visitorManager;
+            _dependentSubjectManager = dependentSubjectManager;
         }
 
         [ODataRoute]
