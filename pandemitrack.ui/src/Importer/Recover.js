@@ -3,16 +3,16 @@ import useFetch from "../useFetch";
 import { useParams } from "react-router-dom";
 import { Button, Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle, Col, Container, Form, FormGroup, Input, Jumbotron, Label, Row } from 'reactstrap';
 
-let Recover = () => {
-    const { id } = useParams();
+let Recover = (props) => {
+    const { params } = props.match;
 
-    const caseRequest = useFetch(`/odata/locations(${id})`, undefined, [id]);
+    const caseRequest = useFetch(`/odata/locations(${params.locationId})`, undefined, [params.locationId]);
 
     const { data } = caseRequest;
 
     const [partner, setPartner] = useState(data?.Name);
-    const [start, setStart] = useState("");
-    const [end, setEnd] = useState("");
+    const [start, setStart] = useState(params.begin);
+    const [end, setEnd] = useState(params.end);
 
     const submit = async () => {
         let result = await fetch("/api/fetch/recover/data", {

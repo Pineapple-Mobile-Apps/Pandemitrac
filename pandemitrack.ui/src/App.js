@@ -36,7 +36,7 @@ function App() {
               <NavLink href="/import">Massenimport</NavLink>
             </NavItem>
           </Nav>
-          <NavbarText>rku.it GmbH</NavbarText>
+          <NavbarText>Gesundheits- und Veterinäramt Münster</NavbarText>
         </Collapse>
       </Navbar>
 
@@ -68,10 +68,7 @@ function App() {
         <Route path="/import/recover" exact>
           <Recover />
         </Route>
-        <Route path="/import/recover/:LocationId/:Begin/:End"  exact>
-          
-          <Recover />
-        </Route>
+        <Route path="/import/recover/:locationId?/:begin?/:end?" component={Recover}  exact/>
 
         
       </Switch>
