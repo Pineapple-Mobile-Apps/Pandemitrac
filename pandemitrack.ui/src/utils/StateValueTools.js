@@ -1,7 +1,10 @@
 export const createChanger = (value, setter) => {
     return (key, fValue) => {
-        value[key] = fValue;
-        setter(value);
+        // Object cloning for reasons
+        let clone = {};
+        Object.assign(clone, value);
+        clone[key] = fValue;
+        setter(clone);
     };
 }
 

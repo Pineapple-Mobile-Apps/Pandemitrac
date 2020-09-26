@@ -8,9 +8,9 @@ export default function VisitsEditor(props) {
     const arrayChanger = createArrayChanger(visits, setVisits);
 
     const addEntry = () => {
-        setVisits([...visits, {
+        setVisits([{
             Location: {}
-        }]);
+        }, ...visits]);
     };
 
     return <>

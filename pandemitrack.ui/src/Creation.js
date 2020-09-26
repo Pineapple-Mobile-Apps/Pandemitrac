@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import { Button, Form, FormGroup, Label, Input, FormText, Container, Nav, NavLink, NavItem, TabContent, TabPane, Row, Col, Alert } from 'reactstrap';
 import VisitsEditor from './VisitsEditor';
-let Next = () => {
+import { createChanger, createInput } from './utils/StateValueTools';
+
+const Next = () => {
   //Verwaltung der Tabs deren Status
   const [activeTab, setActiveTab] = useState("person");
   const toggle = tab => {
@@ -29,56 +31,13 @@ let Next = () => {
     DependentSubjects: []
   });
 
-  //Case
-  const [testDate, setTestDate] = useState("");
-  const [positivTestDate, setPositivTestDate] = useState("");
-  const [quarantineBegin, setQuarantineBegin] = useState("");
-  const [quarantineEnd, setQuarantineEnd] = useState("");
-
-
-  //Persönliche Daten -Subject
-  const [name, setName] = useState("");
-  const [street, setStreet] = useState("");
-  const [housenumber, setHousnumber] = useState("");
-  const [postcode, setPostcode] = useState("");
-  const [city, setCity] = useState("");
-  const [tel, setTel] = useState("");
-  const [mail, setMail] = useState("");
-
-  //Visit
-  const [visitBegin, setVisitBegin] = useState("");
-  const [visitEnd, setVisitEnd] = useState("");
-
-  //Locationdaten
-  const [locationName, setLocationName] = useState("");
-  const [locationContactPerson, setLocationContactPerson] = useState("");
-  const [locationPhone, setLocationPhone] = useState("");
-  const [locationAdress, setLocationAdress] = useState("");
-  const [locationPostCode, setLocationPostCode] = useState("");
-  const [locationCity, setLocationCity] = useState("");
-
-  const [visits, setVisits] = useState([]);
+  const input = createInput(caseData, setCaseData);
+  const changer = createChanger(caseData, setCaseData);
 
   const submit = async () => {
-    let dataObject = {
-      Created: new Date(),
-      TestDate: testDate,
-      PositivTestDate: positivTestDate,
-      QuarantineBegin: quarantineBegin,
-      QuarantineEnd: quarantineEnd,
-      Subject: {
-        Name: name,
-        Mail: mail || null,
-        Address: street + " " + housenumber || "",
-        PostCode: parseInt(postcode) || 0,
-        Phone: tel || null,
-        City: city || ""
-      },
-      Visits: [],
-      DependentSubjects: []
-    };
-    
-    let result = await fetch("/odata/visitors", {
+    console.log("SUBMIT", caseData);
+
+    /*let result = await fetch("/odata/visitors", {
       "method": "POST",
       "headers": {
         "content-type": "application/json"
@@ -91,7 +50,7 @@ let Next = () => {
         Phone: tel || null,
         Mail: mail || null
       })
-    });
+    });*/
   };
 
   return (
@@ -140,34 +99,7 @@ let Next = () => {
           </Row>
           <Row>
             <Col sm="12">
-              <Form>
-                <FormGroup>
-                  <Label for="name">Name</Label>
-                  <Input type="text" name="name" id="name" value={name} onChange={e => setName(e.currentTarget.value)} placeholder="Voller Name" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="street">Straße</Label>
-                  <Input type="text" name="street" id="street" placeholder="Strasse" value={street} onChange={e => setStreet(e.currentTarget.value)} />
-                  <Label for="housenumber">Hausnummer</Label>
-                  <Input type="text" name="housenumber" id="housenumber" value={housenumber} onChange={e => setHousnumber(e.currentTarget.value)} placeholder="Hausnummer (ggf. Zusatz)" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="postcode">Postleitzahl</Label>
-                  <Input type="number" name="postcode" id="postcode" value={postcode} onChange={e => setPostcode(e.currentTarget.value)} placeholder="Postleitzahl" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="city">Stadt</Label>
-                  <Input type="text" name="city" id="city" value={city} onChange={e => setCity(e.currentTarget.value)} placeholder="Stadt" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="tel">Telefonnummer</Label>
-                  <Input type="tel" name="tel" id="tel" value={tel} onChange={e => setTel(e.currentTarget.value)} placeholder="Telefonnummer" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="mail">E-Mail</Label>
-                  <Input type="mail" name="mail" id="mail" value={mail} onChange={e => setMail(e.currentTarget.value)} placeholder="Mail-Adresse" />
-                </FormGroup>
-              </Form>
+              <VisitorEditor visitor={caseData.Subject} setVisitor={e => changer("Subject", e)} />
             </Col>
           </Row>
           <Row>
@@ -188,20 +120,20 @@ let Next = () => {
             <Col sm="12">
               <Form>
                 <FormGroup>
-                  <Label for="testDate">Datum des Coronatest</Label>
-                  <Input type="datetime-local" name="testDate" id="testDate" value={testDate} onChange={e => setTestDate(e.currentTarget.value)} placeholder="Datum des Coronatest" />
+                  <Label for="testDate">Datum des Testes</Label>
+                  <Input type="datetime-local" name="testDate" id="testDate" {...input("TestDate")} placeholder="Datum des Coronatest" />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="positivTestDate">Datum des postiven Coronatest</Label>
-                  <Input type="datetime-local" name="positivTestDate" id="positivTestDate" value={positivTestDate} onChange={e => setPositivTestDate(e.currentTarget.value)} placeholder="Datum des postiven Coronatest" />
+                  <Label for="positivTestDate">Datum des postiven Testes</Label>
+                  <Input type="datetime-local" name="positivTestDate" id="positivTestDate" {...input("PositivTestDate")} placeholder="Datum des postiven Coronatest" />
                 </FormGroup>
                 <FormGroup>
                   <Label for="quarantineBegin">Beginn der Quarantäne</Label>
-                  <Input type="datetime-local" name="quarantineBegin" id="quarantineBegin" value={quarantineBegin} onChange={e => setQuarantineBegin(e.currentTarget.value)} placeholder="Beginn der Quarantäne" />
+                  <Input type="datetime-local" name="quarantineBegin" id="quarantineBegin" {...input("QuarantineBegin")} placeholder="Beginn der Quarantäne" />
                 </FormGroup>
                 <FormGroup>
                   <Label for="quarantineEnd">Ende der Quarantäne</Label>
-                  <Input type="datetime-local" name="quarantineEnd" id="quarantineEnd" value={quarantineEnd} onChange={e => setQuarantineEnd(e.currentTarget.value)} placeholder="Ende der Quarantäne" />
+                  <Input type="datetime-local" name="quarantineEnd" id="quarantineEnd" {...input("QuarantineEnd")} placeholder="Ende der Quarantäne" />
                 </FormGroup>
               </Form>
             </Col>
@@ -222,7 +154,7 @@ let Next = () => {
           </Row>
           <Row>
             <Col sm="12">
-              <VisitsEditor visits={visits} setVisits={setVisits} />
+              <VisitsEditor visits={caseData.Visits} setVisits={e => changer("Visits", e)} />
             </Col>
           </Row>
           <Row>
@@ -274,3 +206,37 @@ let Next = () => {
   )
 }
 export default Next
+
+function VisitorEditor(props) {
+
+  const { visitor, setVisitor } = props;
+
+  const input = createInput(visitor, setVisitor);
+
+  return <Form>
+    <FormGroup>
+      <Label for="name">Name</Label>
+      <Input type="text" id="name" {...input("Name")} placeholder="Voller Name" />
+    </FormGroup>
+    <FormGroup>
+      <Label for="street">Straße und Hausnummer</Label>
+      <Input type="text" name="street" id="street" placeholder="Strasse" {...input("Address")} />
+    </FormGroup>
+    <FormGroup>
+      <Label for="postcode">Postleitzahl</Label>
+      <Input type="number" name="postcode" id="postcode" {...input("PostCode")} placeholder="Postleitzahl" />
+    </FormGroup>
+    <FormGroup>
+      <Label for="city">Stadt</Label>
+      <Input type="text" name="city" id="city" {...input("City")} placeholder="Stadt" />
+    </FormGroup>
+    <FormGroup>
+      <Label for="tel">Telefonnummer</Label>
+      <Input type="tel" name="tel" id="tel" {...input("Phone")} placeholder="Telefonnummer" />
+    </FormGroup>
+    <FormGroup>
+      <Label for="mail">E-Mail</Label>
+      <Input type="mail" name="mail" id="mail" {...input("Mail")} placeholder="Mail-Adresse" />
+    </FormGroup>
+  </Form>;
+}
